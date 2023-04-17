@@ -19,6 +19,7 @@ ADDENEMY = pygame.USEREVENT + 1
 ENEMYSHOOTS = pygame.USEREVENT + 2
 FREEZE = pygame.USEREVENT + 3
 
+import math
 
 class Gameplay(BaseState):
     def __init__(self):
@@ -183,6 +184,9 @@ class Gameplay(BaseState):
 
         self.draw_score(screen)
 
+        # Draw info to screen
+        self.draw_info(screen)
+
         result = pygame.sprite.groupcollide(self.all_rockets, self.all_enemies, True, True)
         if result:
             for key in result:
@@ -232,3 +236,55 @@ class Gameplay(BaseState):
         screen.blit(score, (constants.SCREEN_WIDTH / 2 - score.get_rect().width / 2, 10))
         score = self.font.render(str(self.high_score), True, (255, 255, 255))
         screen.blit(score, (constants.SCREEN_WIDTH / 2 - score.get_rect().width / 2, 40))
+
+    def draw_info(self, screen):
+        new_font = pygame.font.Font(None, 25)
+        #Player info
+        player_x = self.player.rect.x
+        player_y = self.player.rect.y
+        player_info = new_font.render(f"Player cords: ({player_x}, {player_y})", True, (255,255,255))
+        screen.blit(player_info, (10, 550))
+
+        #Closest enemy
+        closest_enemy_1 = float('inf')
+        closest_enemy_1_coords = []
+        closest_enemy_2 = float('inf')
+        closest_enemy_2_coords = []
+        #Enemy Info
+        for enemy in self.all_enemies:
+            enemy_x = enemy.rect.x
+            enemy_y = enemy.rect.y
+            pyth_a = (player_x - enemy_x) ** 2
+            pyth_b = (player_y - enemy_y) ** 2
+            distance = math.sqrt(pyth_a + pyth_b)
+            if distance < closest_enemy_1: 
+                closest_enemy_1 = distance
+                closest_enemy_1_coords = [enemy_x, enemy_y]
+            elif distance < closest_enemy_2:
+                closest_enemy_2 = distance
+                closest_enemy_2_coords = [enemy_x, enemy_y]
+        if closest_enemy_1_coords:
+            enemy_1_info = new_font.render(f"Closest Enemy 1: {closest_enemy_1_coords[0]}, {closest_enemy_1_coords[1]}", True, (0,0,255))
+            screen.blit(enemy_1_info, (10, 575))
+            pygame.draw.line(screen, (0,0,255), (player_x, player_y), (closest_enemy_1_coords[0], closest_enemy_1_coords[1]))
+        if closest_enemy_2_coords:
+            enemy_1_info = new_font.render(f"Closest Enemy 2: {closest_enemy_2_coords[0]}, {closest_enemy_2_coords[1]}", True, (0,0,255))
+            screen.blit(enemy_1_info, (10, 600))
+            pygame.draw.line(screen, (0,0,255), (player_x, player_y), (closest_enemy_2_coords[0], closest_enemy_2_coords[1]))
+
+
+        #Rocket info
+        rocket_info_y = 625
+        rocket_num = 1
+        for rocket in self.enemy_rockets:
+            rocket_x = rocket.rect.x
+            rocket_y = rocket.rect.y
+            rocket_info = new_font.render(f"Rocket {rocket_num} cords: {rocket_x}, {rocket_y}", True, (255,0,0))
+            screen.blit(rocket_info, (10, rocket_info_y))
+            rocket_info_y += 25
+            rocket_num += 1
+            pygame.draw.line(screen, (255,0,0), (player_x, player_y), (rocket_x, rocket_y))
+        
+        #Boundary Info
+        
+       
