@@ -1,6 +1,9 @@
 import pygame
-import numpy
+import numpy as np
 from sprites.player import Player
+from keras import Input
+from keras import Sequential
+from keras.layers import Dense
 
 class AI_Player(Player):
     def __init__(self, sprites, k1, k2, b1, b2):
@@ -14,30 +17,25 @@ class AI_Player(Player):
         r2_x, r2_y = rocket2_coords
         r3_x, r3_y = rocket3_coords
 
-        data_array = numpy.array([player_x, player_y, e1_x, e1_y, e2_x, e2_y, r1_x, r1_y, r2_x, r2_y, r3_x, r3_y])
-        results = self.model.predict(data_array)
-        move = numpy.argmax(results)
+        data_array = [player_x, player_y, e1_x, e1_y, e2_x, e2_y, r1_x, r1_y, r2_x, r2_y, r3_x, r3_y]
+        # results = self.model.__call__(data_array)
+        results = self.model.predict(data_array, batch_size=12)
+        move = np.argmax(results)
 
-        if move == 0:
-            #Left
-            self.rect.move_ip(-5, 0)
-        elif move == 1:
-            #Right
-            self.rect.move_ip(5,0)
-        # If 2 - do nothing
-        elif move == 3:
-            #Shoot rocket
-            return True
-        return False
+        if move == 0: self.rect.move_ip(-5, 0)      # Left
+        elif move == 1: self.rect.move_ip(5,0)      # Right
+        elif move == 3: return True                 # Shoot rocket
+        else: return False                          # Stay still
 
-    def configure_model(k1, k2, b1, b2):
-        model = Sequential([
-            Dense(units=8, activation = 'sigmoid'),
-            Dense(units=8, activation = 'relu')
-        ])
+    def configure_model(self, k1, k2, b1, b2):
+        model = Sequential()
+        model.add(Input(shape=(12,)))
+        model.add(Dense(units=8, activation = 'sigmoid'))
+        model.add(Dense(units=4, activation = 'relu'))
         # model.layers[0].set_weights([k1, b1])
         # model.layers[1].set_weights([k2, b2])
 
         model.compile(loss = 'categorical_crossentropy', optimizer = 'adam')
+        print(model.summary())
 
         return model
