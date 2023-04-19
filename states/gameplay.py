@@ -187,6 +187,14 @@ class Gameplay(BaseState):
         # Draw info to screen
         self.draw_info(screen)
 
+        # Get info and pass it to AI
+        player_x, player_y = self.get_player_info()
+        enemy1_coords, enemy2_coords = self.get_closest_enemies(player_x, player_y)
+        rocket1_coords, rocket2_coords, rocket3_coords = self.get_closest_rockets(player_x, player_y)
+        shoot = self.player.update(player_x, player_y, enemy1_coords, enemy2_coords, rocket1_coords, rocket2_coords, rocket3_coords)
+        if shoot: self.shoot_rocket()
+
+        
         result = pygame.sprite.groupcollide(self.all_rockets, self.all_enemies, True, True)
         if result:
             for key in result:
@@ -260,19 +268,48 @@ class Gameplay(BaseState):
                 
         return closest_enemy_1_coords, closest_enemy_2_coords
     
+    def get_closest_rockets(self, player_x, player_y):
+        closest_rocket_1, closest_rocket_1_coords = float('inf'), []
+        closest_rocket_2, closest_rocket_2_coords = float('inf'), []
+        closest_rocket_3, closest_rocket_3_coords = float('inf'), []
 
-    def draw_rocket_info(self, screen, player_x, player_y):
+        for rocket in self.enemy_rockets:
+            rocket_x, rocket_y = rocket.rect.x, rocket.rect.y
+
+            pyth_a, pyth_b = (player_x - rocket_x) ** 2, (player_y - rocket_y) ** 2
+            distance = math.sqrt(pyth_a + pyth_b)
+
+            if distance < closest_rocket_1: 
+                closest_rocket_1 = distance
+                closest_rocket_1_coords = [rocket_x, rocket_y]
+            elif distance < closest_rocket_2: 
+                closest_rocket_2 = distance
+                closest_rocket_2_coords = [rocket_x, rocket_y]
+            elif distance < closest_rocket_3: 
+                closest_rocket_3 = distance
+                closest_rocket_3_coords = [rocket_x, rocket_y]
+        return closest_rocket_1_coords, closest_rocket_2_coords, closest_rocket_3_coords
+
+
+    def draw_rocket_info(self, screen, player_x, player_y, r1_coords, r2_coords, r3_coords):
         new_font = pygame.font.Font(None, 25)
         rocket_info_y = 625
-        rocket_num = 1
-        for rocket in self.enemy_rockets:
-            rocket_x = rocket.rect.x
-            rocket_y = rocket.rect.y
-            rocket_info = new_font.render(f"Rocket {rocket_num} cords: {rocket_x}, {rocket_y}", True, (255,0,0))
-            screen.blit(rocket_info, (10, rocket_info_y))
-            rocket_info_y += 25
-            rocket_num += 1
-            pygame.draw.line(screen, (255,0,0), (player_x, player_y), (rocket_x, rocket_y))
+        if r1_coords:
+            x, y = r1_coords
+            rocket_1_info = new_font.render(f"Closest Rocket 1: {x}, {y}", True, (255,0,0))
+            screen.blit(rocket_1_info, (10, 625))
+            pygame.draw.line(screen, (255,0,0), (player_x, player_y), (x,y))
+        if r2_coords:
+            x, y = r2_coords
+            rocket_2_info = new_font.render(f"Closest Rocket 2: {x}, {y}", True, (255,0,0))
+            screen.blit(rocket_2_info, (10, 650))
+            pygame.draw.line(screen, (255,0,0), (player_x, player_y), (x,y))
+
+        if r3_coords:
+            x, y = r3_coords
+            rocket_3_info = new_font.render(f"Closest Rocket 3: {x}, {y}", True, (255,0,0))
+            screen.blit(rocket_3_info, (10, 675))
+            pygame.draw.line(screen, (255,0,0), (player_x, player_y), (x,y))
     
     
     def draw_closest_enemies(self, screen, player_x, player_y, e1_coords, e2_coords):
@@ -295,13 +332,13 @@ class Gameplay(BaseState):
         player_x, player_y = self.get_player_info()
         
         # write player coords
-        player_info = new_font.render(f"Player cords: ({player_x}, {player_y})", True, (255,255,255))
+        player_info = new_font.render(f"Player coords: ({player_x}, {player_y})", True, (255,255,255))
         screen.blit(player_info, (10, 550))
 
         e1_coords, e2_coords = self.get_closest_enemies(player_x, player_y)
         self.draw_closest_enemies(screen, player_x, player_y, e1_coords, e2_coords)
-        self.draw_rocket_info(screen, player_x, player_y)
+        r1_coords, r2_coords, r3_coords = self.get_closest_rockets(player_x, player_y)
+        self.draw_rocket_info(screen, player_x, player_y, r1_coords, r2_coords, r3_coords)
         
-        #Boundary Info
         
        
