@@ -1,11 +1,16 @@
 import pygame
 import numpy
+import tensorflow as tf
 from sprites.player import Player
+from tensorflow.keras import Sequential
+from tensorflow.keras.layers import Dense
+
 
 class AI_Player(Player):
     def __init__(self, sprites, k1, k2, b1, b2):
         super().__init__(sprites)
         self.model = self.configure_model(k1, k2, b1, b2)
+    
     
     def update(self, player_x, player_y, enemy1_coords, enemy2_coords, rocket1_coords, rocket2_coords, rocket3_coords):
         e1_x, e1_y = enemy1_coords
@@ -30,10 +35,11 @@ class AI_Player(Player):
             return True
         return False
 
-    def configure_model(k1, k2, b1, b2):
+
+    def configure_model(layer1_w, layer2_w, b1, b2):
         model = Sequential([
             Dense(units=8, activation = 'sigmoid'),
-            Dense(units=8, activation = 'relu')
+            Dense(units=4, activation = 'relu')
         ])
         # model.layers[0].set_weights([k1, b1])
         # model.layers[1].set_weights([k2, b2])
@@ -41,3 +47,5 @@ class AI_Player(Player):
         model.compile(loss = 'categorical_crossentropy', optimizer = 'adam')
 
         return model
+    
+# w = tf.Variable(initial_value=w_init(shape=(12,), dtype='float32'), trainable=True)
