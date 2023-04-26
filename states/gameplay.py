@@ -5,7 +5,7 @@ import constants
 from starfield import StarField
 
 from .base_state import BaseState
-from sprites.player import Player
+from sprites.ai_player import AI_Player
 from sprites.rocket import Rocket
 from sprites.enemy import Enemy
 from sprites.control_point import ControlPoint
@@ -42,7 +42,7 @@ class Gameplay(BaseState):
         self.mover = ControlHandlerMover(self.control_points1, self.path_point_selector)
         self.control_sprites = pygame.sprite.Group()
         self.add_control_points()
-        self.player = Player(self.sprites)
+        self.player = AI_Player(self.sprites,-1,-1,-1,-1)
         self.all_sprites = pygame.sprite.Group()
         self.all_sprites.add(self.player)
         self.wave_count = 0
@@ -63,7 +63,7 @@ class Gameplay(BaseState):
     def startup(self):
         pygame.mixer.music.load('./assets/sounds/02 Start Music.mp3')
         pygame.mixer.music.play()
-        self.player = Player(self.sprites)
+        self.player = AI_Player(self.sprites,-1,-1,-1,-1)
         self.all_sprites = pygame.sprite.Group()
         self.all_sprites.add(self.player)
         self.wave_count = 0
@@ -165,22 +165,24 @@ class Gameplay(BaseState):
 
     def draw(self, screen):
         self.starfield.render(screen)
-        pressed_keys = pygame.key.get_pressed()
+        # pressed_keys = pygame.key.get_pressed()
         for entity in self.all_sprites:
-            entity.update(pressed_keys)
+            if type(entity) == AI_Player: continue
+            entity.update(None)
 
         for entity in self.control_sprites:
-            entity.update(pressed_keys)
+            if type(entity) == AI_Player: continue
+            entity.update(None)
 
         for entity in self.all_sprites:
             screen.blit(entity.get_surf(), entity.rect)
 
-        if self.show_control:
-            for entity in self.control_sprites:
-                screen.blit(entity.get_surf(), entity.rect)
+        # if self.show_control:
+        #     for entity in self.control_sprites:
+        #         screen.blit(entity.get_surf(), entity.rect)
 
-            self.drawPath(screen)
-            self.draw_control_lines(screen)
+        #     self.drawPath(screen)
+        #     self.draw_control_lines(screen)
 
         self.draw_score(screen)
 
@@ -266,6 +268,8 @@ class Gameplay(BaseState):
                 closest_enemy_2 = distance
                 closest_enemy_2_coords = [enemy_x, enemy_y]
                 
+        if closest_enemy_1_coords == []: closest_enemy_1_coords = [-1, -1]
+        if closest_enemy_2_coords == []: closest_enemy_2_coords = [-1, -1]
         return closest_enemy_1_coords, closest_enemy_2_coords
     
     def get_closest_rockets(self, player_x, player_y):
@@ -288,6 +292,10 @@ class Gameplay(BaseState):
             elif distance < closest_rocket_3: 
                 closest_rocket_3 = distance
                 closest_rocket_3_coords = [rocket_x, rocket_y]
+                
+        if closest_rocket_1_coords == []: closest_rocket_1_coords = [-1,-1]
+        if closest_rocket_2_coords == []: closest_rocket_2_coords = [-1,-1]
+        if closest_rocket_3_coords == []: closest_rocket_3_coords = [-1,-1]
         return closest_rocket_1_coords, closest_rocket_2_coords, closest_rocket_3_coords
 
 
