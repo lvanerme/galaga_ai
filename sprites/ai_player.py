@@ -1,19 +1,23 @@
 import pygame
 import numpy as np
 import constants
+import tensorflow as tf
 
 from sprites.player import Player
 from keras import Input
 from keras import Sequential
 from keras.layers import Dense
 
+
 class AI_Player(Player):
     def __init__(self, sprites, k1, k2, b1, b2):
         super().__init__(sprites)
         self.model = self.configure_model(k1, k2, b1, b2)
     
+    
     def get_event(self, event):
         pass
+    
     
     def update(self, player_x, player_y, enemy1_coords, enemy2_coords, rocket1_coords, rocket2_coords, rocket3_coords):
         e1_x, e1_y = enemy1_coords
@@ -36,6 +40,7 @@ class AI_Player(Player):
             
         if move == 3: return True                 # Shoot rocket
         else: return False                          # Stay still
+
 
     def configure_model(self, k1, k2, b1, b2):
         model = Sequential()
