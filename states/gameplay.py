@@ -45,6 +45,11 @@ class Gameplay(BaseState):
         self.player = AI_Player(self.sprites,-1,-1,-1,-1)
         self.all_sprites = pygame.sprite.Group()
         self.all_sprites.add(self.player)
+        
+        # Uncomment for player two
+        # self.player2 = AI_Player(self.sprites,-1,-1,-1,-1)
+        # self.all_sprites.add(self.player2)
+
         self.wave_count = 0
         self.enemies = 0
         self.number_of_enemies = 13
@@ -65,6 +70,11 @@ class Gameplay(BaseState):
         pygame.mixer.music.play()
         self.player = AI_Player(self.sprites,-1,-1,-1,-1)
         self.all_sprites = pygame.sprite.Group()
+
+        # Uncomment for player two
+        # self.player2 = AI_Player(self.sprites,-1,-1,-1,-1)
+        # self.all_sprites.add(self.player2)
+
         self.all_sprites.add(self.player)
         self.wave_count = 0
         self.enemies = 0
@@ -194,9 +204,15 @@ class Gameplay(BaseState):
         enemy1_coords, enemy2_coords = self.get_closest_enemies(player_x, player_y)
         rocket1_coords, rocket2_coords, rocket3_coords = self.get_closest_rockets(player_x, player_y)
         shoot = self.player.update(player_x, player_y, enemy1_coords, enemy2_coords, rocket1_coords, rocket2_coords, rocket3_coords)
-        if shoot: self.shoot_rocket()
+        if shoot and len(self.all_rockets) < 2: self.shoot_rocket()
 
-        
+        # Uncomment for player two
+        # player2_x, player2_y = self.player2.rect.x, self.player2.rect.y
+        # enemy1_coords, enemy2_coords = self.get_closest_enemies(player2_x, player2_y)
+        # rocket1_coords, rocket2_coords, rocket3_coords = self.get_closest_rockets(player2_x, player2_y)
+        # shoot = self.player2.update(player2_x, player2_y, enemy1_coords, enemy2_coords, rocket1_coords, rocket2_coords, rocket3_coords)
+        # # if shoot and len(self.all_rockets) < 2: self.shoot_rocket()
+
         result = pygame.sprite.groupcollide(self.all_rockets, self.all_enemies, True, True)
         if result:
             for key in result:
