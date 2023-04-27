@@ -53,7 +53,7 @@ class Gameplay(BaseState):
         self.wave_count = 0
         self.enemies = 0
         self.number_of_enemies = 13
-        self.score = 0
+        # self.score = 0
         self.high_score = 0
         self.freeze = False
 
@@ -79,7 +79,7 @@ class Gameplay(BaseState):
         self.wave_count = 0
         self.enemies = 0
         self.number_of_enemies = 10
-        self.score = 0
+        # self.score = 0
         self.freeze = False
 
         self.all_enemies = pygame.sprite.Group()
@@ -216,9 +216,9 @@ class Gameplay(BaseState):
         result = pygame.sprite.groupcollide(self.all_rockets, self.all_enemies, True, True)
         if result:
             for key in result:
-                self.score += 120
-                if self.score > self.high_score:
-                    self.high_score = self.score
+                self.player.score += 120
+                if self.player.score > self.high_score:
+                    self.high_score = self.player.score
                 self.all_sprites.add(Explosion(self.explosion_sprites, key.rect[0], key.rect[1]))
                 self.kill_sound.play()
 
@@ -255,7 +255,7 @@ class Gameplay(BaseState):
     def draw_score(self, screen):
         score = self.font.render('SCORE', True, (255, 20, 20))
         screen.blit(score, (constants.SCREEN_WIDTH / 2 - 300 - score.get_rect().width / 2, 10))
-        score = self.font.render(str(self.score), True, (255, 255, 255))
+        score = self.font.render(str(self.playerscore), True, (255, 255, 255))
         screen.blit(score, (constants.SCREEN_WIDTH / 2 - 300 - score.get_rect().width / 2, 40))
 
         score = self.font.render('HIGH SCORE', True, (255, 20, 20))

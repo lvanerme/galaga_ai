@@ -17,6 +17,7 @@ class Player(pygame.sprite.Sprite):
         self.surf = self.images[0]
         self.rect = self.surf.get_rect(center=(constants.SCREEN_WIDTH / 2, constants.SCREEN_HEIGHT - 40))
         self.image_index = 0
+        self.score = 0
 
     def get_event(self, event):
         pass

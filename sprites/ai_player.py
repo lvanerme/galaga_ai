@@ -14,7 +14,6 @@ class AI_Player(Player):
         super().__init__(sprites)
         self.model = self.configure_model(k1, k2, b1, b2)
     
-    
     def get_event(self, event):
         pass
     
