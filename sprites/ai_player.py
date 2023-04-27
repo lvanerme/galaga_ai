@@ -10,9 +10,19 @@ from keras.layers import Dense
 
 
 class AI_Player(Player):
-    def __init__(self, sprites, k1, k2, b1, b2):
+    def __init__(self, input_hidden_ws, hidden_bs, hidden_output_ws, output_bs):
+        # super().__init__(sprites)
+        self.input_hidden_ws = input_hidden_ws
+        self.hidden_bs = hidden_bs
+        self.hidden_output_ws = hidden_output_ws
+        self.output_bs = output_bs
+        self.fitness_score = -1
+        self.model = self.configure_model(input_hidden_ws, hidden_bs, hidden_output_ws, output_bs)
+    
+    
+    def start(self, sprites):
         super().__init__(sprites)
-        self.model = self.configure_model(k1, k2, b1, b2)
+    
     
     def get_event(self, event):
         pass
@@ -41,16 +51,18 @@ class AI_Player(Player):
         else: return False                        # Stay still
 
 
-    def configure_model(self, k1, k2, b1, b2):
+    def configure_model(self, input_hidden_ws, hidden_bs, hidden_output_ws, output_bs):
         model = Sequential()
         model.add(Input((12, )))
         model.add(Dense(units=8, activation = 'sigmoid'))
         model.add(Dense(units=4, activation = 'relu'))
-        # model.layers[0].set_weights([k1, b1])
-        # model.layers[1].set_weights([k2, b2])
-
-        print(model.layers[1].weights)
-
+        
+        hidden_weights = [np.array(input_hidden_ws).reshape(12, 8), np.array(hidden_bs)]
+        output_weights = [np.array(hidden_output_ws).reshape(8, 4), np.array(output_bs)]
+        # hidden_weights = np.array([input_hidden_ws, hidden_bs]).reshape(12, 8)
+        # output_weights = np.array([hidden_output_ws, output_bs]).reshape(8, 4)
+        model.layers[0].set_weights(hidden_weights)
+        model.layers[1].set_weights(output_weights)
 
         model.compile(loss = 'categorical_crossentropy', optimizer = 'adam')
         return model

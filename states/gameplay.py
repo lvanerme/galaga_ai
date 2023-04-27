@@ -22,7 +22,7 @@ FREEZE = pygame.USEREVENT + 3
 import math
 
 class Gameplay(BaseState):
-    def __init__(self):
+    def __init__(self, player:AI_Player=None):
         super(Gameplay, self).__init__()
         pygame.time.set_timer(ADDENEMY, 450)
         pygame.time.set_timer(ENEMYSHOOTS, 1000)
@@ -42,7 +42,8 @@ class Gameplay(BaseState):
         self.mover = ControlHandlerMover(self.control_points1, self.path_point_selector)
         self.control_sprites = pygame.sprite.Group()
         self.add_control_points()
-        self.player = AI_Player(self.sprites,-1,-1,-1,-1)
+        self.player = AI_Player(self.sprites,-1,-1,-1,-1) if not player else player
+        self.player.start(spritesheet.SpriteSheet(constants.SPRITE_SHEET))
         self.all_sprites = pygame.sprite.Group()
         self.all_sprites.add(self.player)
         
@@ -68,7 +69,8 @@ class Gameplay(BaseState):
     def startup(self):
         pygame.mixer.music.load('./assets/sounds/02 Start Music.mp3')
         pygame.mixer.music.play()
-        self.player = AI_Player(self.sprites,-1,-1,-1,-1)
+        # NOTE: commented out this line to get game to initialize with given values in gameplay
+        # self.player = AI_Player(-1,-1,-1,-1)
         self.all_sprites = pygame.sprite.Group()
 
         # Uncomment for player two
@@ -255,7 +257,7 @@ class Gameplay(BaseState):
     def draw_score(self, screen):
         score = self.font.render('SCORE', True, (255, 20, 20))
         screen.blit(score, (constants.SCREEN_WIDTH / 2 - 300 - score.get_rect().width / 2, 10))
-        score = self.font.render(str(self.playerscore), True, (255, 255, 255))
+        score = self.font.render(str(self.high_score), True, (255, 255, 255))
         screen.blit(score, (constants.SCREEN_WIDTH / 2 - 300 - score.get_rect().width / 2, 40))
 
         score = self.font.render('HIGH SCORE', True, (255, 20, 20))
