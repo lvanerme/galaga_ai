@@ -39,7 +39,7 @@ class AI_Player(Player):
         if self.rect.right > constants.SCREEN_WIDTH: self.rect.right = constants.SCREEN_WIDTH
             
         if move == 3: return True                 # Shoot rocket
-        else: return False                          # Stay still
+        else: return False                        # Stay still
 
 
     def configure_model(self, k1, k2, b1, b2):
@@ -49,6 +49,9 @@ class AI_Player(Player):
         model.add(Dense(units=4, activation = 'relu'))
         # model.layers[0].set_weights([k1, b1])
         # model.layers[1].set_weights([k2, b2])
+
+        print(model.layers[1].weights)
+
 
         model.compile(loss = 'categorical_crossentropy', optimizer = 'adam')
         return model
