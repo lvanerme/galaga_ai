@@ -1,16 +1,15 @@
-import pygame
 import numpy as np
 import constants
 import tensorflow as tf
 
-from sprites.player import Player
 from keras import Input
 from keras import Sequential
 from keras.layers import Dense
+from sprites.player import Player
 
 
 class AI_Player(Player):
-    def __init__(self, input_hidden_ws, hidden_bs, hidden_output_ws, output_bs):
+    def __init__(self, input_hidden_ws: list, hidden_bs: list, hidden_output_ws: list, output_bs: list):
         # super().__init__(sprites)
         self.input_hidden_ws = input_hidden_ws
         self.hidden_bs = hidden_bs
