@@ -15,7 +15,6 @@ class AI_Player(Player):
         self.hidden_bs = hidden_bs
         self.hidden_output_ws = hidden_output_ws
         self.output_bs = output_bs
-        self.fitness_score = -1
         self.model = self.configure_model(input_hidden_ws, hidden_bs, hidden_output_ws, output_bs)
     
     

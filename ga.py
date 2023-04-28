@@ -1,6 +1,7 @@
 import spritesheet
 import constants
 import struct
+import numpy as np
 from main import play_game
 from random import random, randrange, choices
 from tensorflow import random_normal_initializer, Variable
@@ -130,23 +131,37 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=4000, net_units=8, N=2
     for player in pop: play_game(player)  
     scores = [p.score for p in pop]      
     
-    # NOTE: should be replaced with tourney once fully ready
-    # i1, i2 = randrange(0, pop_size), randrange(0, pop_size)
-    # c1, c2, new_c = pop[i1], pop[i2], None
-    new_pop, new_len = [], 0
-    while new_len < pop_size:
-        i1, i2 = choices(scores, weights=scores, k=N), choices(scores, weights=scores, k=N)
-        c1, c2 = pop[scores.index(max(i1))], pop[scores.index(max(i2))]
+    # main loop
+    num_iters = 0
+    while num_iters := num_iters + 1 < max_iters:
+        new_pop, new_len, best_score = [], 0, max(scores)
         
-        if random() <= cross_rate: new_c = crossover(c1, c2)
-        else: new_c = c1 if c1.score >= c2.score else c2 
-        
-        new_pop.append(new_c)
-        new_len += 1
+        # gen new pop
+        while new_len := new_len + 1 < pop_size:
+            # tourney for new chromosome
+            i1, i2 = choices(scores, weights=scores, k=N), choices(scores, weights=scores, k=N)
+            c1, c2 = pop[scores.index(max(i1))], pop[scores.index(max(i2))]
+            
+            if random() <= cross_rate: new_c = crossover(c1, c2)
+            else: new_c = c1 if c1.score >= c2.score else c2 
+            
+            # TODO: add mutation here
+            
+            new_pop.append(new_c)
         
         for player in new_pop: play_game(player)
-        new_scores = [p.score for p in pop]
-        scores = new_scores
-    
+        scores = [p.score for p in pop]
+
+        # eval gen
+        gen_max, count = max(scores), 0
+        if gen_max > best_score: best_score = gen_max
+        for score in scores:
+            if score == gen_max: count += 1
+        
+        percent_max = count / pop_size
+        gen_avg = np.average(scores)
+        # if p:   # should we print stats?
+        print(f'{num_iters = }\n\t{best_score = }\t{gen_avg = }\tconsensus rate = {percent_max}')
+
     
 ga(3)
