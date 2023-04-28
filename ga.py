@@ -133,11 +133,11 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=4000, net_units=8, N=2
     
     # main loop
     num_iters = 0
-    while num_iters := num_iters + 1 < max_iters:
+    while num_iters < max_iters:
         new_pop, new_len, best_score = [], 0, max(scores)
         
         # gen new pop
-        while new_len := new_len + 1 < pop_size:
+        while new_len < pop_size:
             # tourney for new chromosome
             i1, i2 = choices(scores, weights=scores, k=N), choices(scores, weights=scores, k=N)
             c1, c2 = pop[scores.index(max(i1))], pop[scores.index(max(i2))]
@@ -148,8 +148,10 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=4000, net_units=8, N=2
             # TODO: add mutation here
             
             new_pop.append(new_c)
+            new_len += 1
         
-        for player in new_pop: play_game(player)
+        pop = new_pop
+        for player in pop: play_game(player)
         scores = [p.score for p in pop]
 
         # eval gen
@@ -162,6 +164,7 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=4000, net_units=8, N=2
         gen_avg = np.average(scores)
         # if p:   # should we print stats?
         print(f'{num_iters = }\n\t{best_score = }\t{gen_avg = }\tconsensus rate = {percent_max}')
+        num_iters += 1
 
     
 ga(3)
