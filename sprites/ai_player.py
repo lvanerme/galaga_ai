@@ -10,12 +10,14 @@ from sprites.player import Player
 
 class AI_Player(Player):
     def __init__(self, input_hidden_ws: list, hidden_bs: list, hidden_output_ws: list, output_bs: list):
+        # NOTE: keep track of lengths here
         # super().__init__(sprites)
         self.input_hidden_ws = input_hidden_ws
         self.hidden_bs = hidden_bs
         self.hidden_output_ws = hidden_output_ws
         self.output_bs = output_bs
         self.model = self.configure_model(input_hidden_ws, hidden_bs, hidden_output_ws, output_bs)
+        self.updates_survived = 0
     
     
     def start(self, sprites):
@@ -27,6 +29,8 @@ class AI_Player(Player):
     
     
     def update(self, player_x, player_y, enemy1_coords, enemy2_coords, rocket1_coords, rocket2_coords, rocket3_coords):
+        self.updates_survived += 1
+        
         e1_x, e1_y = enemy1_coords
         e2_x, e2_y = enemy2_coords
         r1_x, r1_y = rocket1_coords

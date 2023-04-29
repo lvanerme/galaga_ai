@@ -1,9 +1,11 @@
 import spritesheet
 import constants
+import math
 import struct
 import numpy as np
 from main import play_game
-from random import random, randrange, choices
+from sys import maxsize
+from random import random, randrange, randint, uniform, choices
 from tensorflow import random_normal_initializer, Variable
 from sprites.ai_player import AI_Player
 
@@ -39,6 +41,34 @@ def gen_seed(net_units, pop_size) -> list:
     return pop
 
 
+def parse_weight_list(i_to_h_w_len, h_b_len, h_to_o_w_len, o_b_len, combined:list):
+    index = i_to_h_w_len
+    new_input_hidden_ws = [combined[w1] for w1 in range(i_to_h_w_len)]
+    new_hidden_bs = [combined[b1] for b1 in range(index, (index + h_b_len))]
+    index += h_b_len
+    new_hidden_output_ws = [combined[w2] for w2 in range(index, (index + h_to_o_w_len))]
+    index += h_to_o_w_len
+    new_output_bs = [combined[b2] for b2 in range(index, (index + o_b_len))]
+    
+    return AI_Player(new_input_hidden_ws, new_hidden_bs, new_hidden_output_ws, new_output_bs)
+
+
+def mutation(c: AI_Player):
+    i_to_h_w_len, h_b_len, h_to_o_w_len, o_b_len = len(c.input_hidden_ws), len(c.hidden_bs), len(c.hidden_output_ws), len(c.output_bs)
+    combined_len = i_to_h_w_len + h_b_len + h_to_o_w_len + o_b_len
+    combined = c.input_hidden_ws + c.hidden_bs + c.hidden_output_ws + c.output_bs
+    
+    num_mutations = randint(1, math.floor(combined_len / 7))    # Will be 1 - 20 assuming a 8-node hidden layer....possibly hard code once finalized
+    indices = [i for i in range(combined_len)]
+    genes = [np.random.choice(indices, replace=False) for _ in range(num_mutations)]       # grab num_mutations random genes
+    for gene in genes:
+        change = uniform(0.001, 0.1)        # how much to change the value by
+        if randint(0,1) == 1: change = -change
+        combined[gene] += change
+    
+    return parse_weight_list(i_to_h_w_len, h_b_len, h_to_o_w_len, o_b_len, combined)
+
+
 def crossover(c1: AI_Player, c2: AI_Player):
     i_to_h_w_len, h_b_len, h_to_o_w_len, o_b_len = len(c1.input_hidden_ws), len(c1.hidden_bs), len(c1.hidden_output_ws), len(c1.output_bs)
     
@@ -62,40 +92,9 @@ def crossover(c1: AI_Player, c2: AI_Player):
         j += 1
     
     # split back into weight arrays
-    index = i_to_h_w_len
-    new_input_hidden_ws = [new_c[w1] for w1 in range(i_to_h_w_len)]
-    new_hidden_bs = [new_c[b1] for b1 in range(index, (index + h_b_len))]
-    index += h_b_len
-    new_hidden_output_ws = [new_c[w2] for w2 in range(index, (index + h_to_o_w_len))]
-    index += h_to_o_w_len
-    new_output_bs = [new_c[b2] for b2 in range(index, (index + o_b_len))]
-    
-    return AI_Player(new_input_hidden_ws, new_hidden_bs, new_hidden_output_ws, new_output_bs)
-    
-    
-def ntourney(scores: list, N: int):
-    options = choices(scores, weights=scores, k=N)
-    return max(options)
+    return parse_weight_list(i_to_h_w_len, h_b_len, h_to_o_w_len, o_b_len, new_c)
 
-    
-    """_summary_
-    def crossover(c1, c2):
-    x1, y1 = c1
-    x2, y2 = c2
-    
-    combined1 = f"{format(x1, '016b')}{format(y1, '016b')}"
-    combined2 = f"{format(x2, '016b')}{format(y2, '016b')}"
-    
-    amount = random.randint(0,31)
-    combined1_split1, combined1_split2 = combined1[:amount], combined1[amount:]
-    combined2_split1, combined2_split2 = combined2[:amount], combined2[amount:]
-    
-    new1, new2 = f'{combined1_split1}{combined2_split2}', f'{combined2_split1}{combined1_split2}'
-    newX1, newY1 = int(new1[:16], 2), int(new1[16:], 2)
-    newX2, newY2 = int(new2[:16], 2), int(new2[16:], 2)
-    
-    return [newX1, newY1], [newX2, newY2]
-    """
+
 def weights_to_bin(c1: AI_Player, c2: AI_Player):
     bin1, bin2 = '', ''
     for i,val in enumerate(c1.input_hidden_ws):
@@ -125,34 +124,69 @@ def weights_to_bin(c1: AI_Player, c2: AI_Player):
     return bin1, bin2
 
 
+def calc_fitness_scores(players: list):
+    sum_scores, sum_times, max_score, min_score, max_time, min_time, num_players = 0, 0, -1, maxsize, -1, maxsize, len(players)
+    for p in players:
+        s, t = p.score, p.updates_survived
+        sum_scores += s
+        sum_times += t
+        
+        if s >= max_score: max_score = s
+        if s <= min_score: min_score = s
+        if t >= max_time: max_time = t
+        if t <= min_time: min_time = t
+    
+    mean_score, mean_time = (sum_scores / num_players), (sum_times / num_players)
+    
+    fitness_scores = []
+    for p in players:
+        score = (p.score - mean_score) / (max_score - min_score)
+        time = (p.updates_survived - mean_time) / (max_time - min_time)
+        fitness_scores.append((score + time) / 2)
+        
+    return fitness_scores
+        
+
 def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=4000, net_units=8, N=2):
     # gen start pop
-    pop = gen_seed(net_units, pop_size)
-    for player in pop: play_game(player)  
-    scores = [p.score for p in pop]      
+    players = gen_seed(net_units, pop_size)
+    for player in players: play_game(player)  
+    scores = calc_fitness_scores(players)
+    pop = [(p,s) for p,s in sorted(zip(players,scores), key=lambda x: x[1], reverse=True)]     # create list of tuples containing AI_Player and its associated score, sorted by score
+    best_score = pop[0][1]      
     
     # main loop
     num_iters = 0
     while num_iters < max_iters:
-        new_pop, new_len, best_score = [], 0, max(scores)
+        # new_players, new_len = [pop[i][0] for i in range(5)], 5         # grab 5 best from previous gen and automatically add them to new_pop
+        new_players, new_len = [], 0
+        for player in new_players: 
+            if random() <= mut_rate: player = mutation(player)
         
         # gen new pop
         while new_len < pop_size:
             # tourney for new chromosome
-            i1, i2 = choices(scores, weights=scores, k=N), choices(scores, weights=scores, k=N)
-            c1, c2 = pop[scores.index(max(i1))], pop[scores.index(max(i2))]
+            cs = choices(pop, weights=scores, k=N)
+            new_c, max_score = None, -1
+            for c in cs:
+                s = c[1]
+                if s > max_score:
+                    new_c = c[0]
+                    max_score = s
             
-            if random() <= cross_rate: new_c = crossover(c1, c2)
-            else: new_c = c1 if c1.score >= c2.score else c2 
+            if random() <= mut_rate: new_c = mutation(new_c)
             
-            # TODO: add mutation here
+            # No crossover?
+            # if random() <= cross_rate: new_c = crossover(c1, c2)
+            # else: new_c = c1 if c1.score >= c2.score else c2 
             
-            new_pop.append(new_c)
+            new_players.append(new_c)
             new_len += 1
         
-        pop = new_pop
-        for player in pop: play_game(player)
-        scores = [p.score for p in pop]
+        # pop = new_pop
+        for player in new_players: play_game(player)
+        scores = [p.score for p in new_players]
+        pop = [(p,s) for p,s in sorted(zip(new_players,scores), key=lambda x: x[1], reverse=True)]     # create list of tuples containing AI_Player and its associated score, sorted by score
 
         # eval gen
         gen_max, count = max(scores), 0
@@ -167,4 +201,4 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=4000, net_units=8, N=2
         num_iters += 1
 
     
-ga(3)
+ga(3, mut_rate=0.3)
