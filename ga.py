@@ -55,4 +55,4 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=4000, net_units=8):
     else: new_c = c1 if c1.score >= c2.score else c2 
     
     
-ga(1)
+ga(2)
