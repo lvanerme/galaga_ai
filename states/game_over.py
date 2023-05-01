@@ -16,17 +16,18 @@ class GameOver(BaseState):
             center=instructions_center)
 
     def get_event(self, event):
-        if event.type == pygame.QUIT:
-            self.quit = True
-        elif event.type == pygame.KEYUP:
-            if event.key == pygame.K_RETURN:
-                self.next_state = "MENU"
-                self.done = True
-            elif event.key == pygame.K_r:
-                self.next_state = "GAMEPLAY"
-                self.done = True
-            elif event.key == pygame.K_ESCAPE:
-                self.quit = True
+        self.quit = True
+        # if event.type == pygame.QUIT:
+        #     self.quit = True
+        # elif event.type == pygame.KEYUP:
+        #     if event.key == pygame.K_RETURN:
+        #         self.next_state = "MENU"
+        #         self.done = True
+        #     elif event.key == pygame.K_r:
+        #         self.next_state = "GAMEPLAY"
+        #         self.done = True
+        #     elif event.key == pygame.K_ESCAPE:
+        #         self.quit = True
 
     def draw(self, surface):
         surface.fill(pygame.Color("black"))
