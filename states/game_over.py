@@ -30,6 +30,7 @@ class GameOver(BaseState):
         #         self.quit = True
 
     def draw(self, surface):
-        surface.fill(pygame.Color("black"))
-        surface.blit(self.title, self.title_rect)
-        surface.blit(self.instructions, self.instructions_rect)
+        # surface.fill(pygame.Color("black"))
+        # surface.blit(self.title, self.title_rect)
+        # surface.blit(self.instructions, self.instructions_rect)
+        pass
