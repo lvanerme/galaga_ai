@@ -147,7 +147,7 @@ def calc_fitness_scores(players: list):
     return fitness_scores
         
 
-def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=4000, net_units=8, N=2):
+def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, N=2):
     # gen start pop
     players = gen_seed(net_units, pop_size)
     for player in players: play_game(player)  
@@ -157,6 +157,7 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=4000, net_units=8, N=2
     
     # main loop
     num_iters = 0
+    out_file = open("output_basic.txt", "w")
     while num_iters < max_iters:
         # new_players, new_len = [pop[i][0] for i in range(5)], 5         # grab 5 best from previous gen and automatically add them to new_pop
         new_players, new_len = [], 0
@@ -197,8 +198,10 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=4000, net_units=8, N=2
         percent_max = count / pop_size
         gen_avg = np.average(scores)
         # if p:   # should we print stats?
-        print(f'{num_iters = }\n\t{best_score = }\t{gen_avg = }\tconsensus rate = {percent_max}')
+        # print(f'{num_iters = }\n\t{best_score = }\t{gen_avg = }\tconsensus rate = {percent_max}')
+        out_file.write(f'{num_iters = }\n\t{best_score = }\t{gen_avg = }\tconsensus rate = {percent_max}\n')
         num_iters += 1
+    out_file.close()
 
     
-ga(3, mut_rate=0.3)
+ga(10, mut_rate=0.3)
