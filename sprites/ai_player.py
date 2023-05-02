@@ -29,7 +29,7 @@ class AI_Player(Player):
     
     
     def update(self, player_x, player_y, enemy1_coords, enemy2_coords, rocket1_coords, rocket2_coords, rocket3_coords, dist_to_left, dist_to_right):
-        self.updates_survived += 1
+        self.updates_survived += 1          # TODO: timeout at certain point...
         
         e1_x, e1_y = enemy1_coords
         e2_x, e2_y = enemy2_coords
