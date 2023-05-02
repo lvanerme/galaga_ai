@@ -25,15 +25,11 @@ class Player(pygame.sprite.Sprite):
     def update(self, pressed_keys):
         self.timer += 1
 
-        if pressed_keys[K_LEFT]:
-            self.rect.move_ip(-5, 0)
-        if pressed_keys[K_RIGHT]:
-            self.rect.move_ip(5, 0)
+        if pressed_keys[K_LEFT]: self.rect.move_ip(-5, 0)
+        if pressed_keys[K_RIGHT]: self.rect.move_ip(5, 0)
 
-        if self.rect.left < 0:
-            self.rect.left = 0
-        if self.rect.right > constants.SCREEN_WIDTH:
-            self.rect.right = constants.SCREEN_WIDTH
+        if self.rect.left < 0: self.rect.left = 0
+        if self.rect.right > constants.SCREEN_WIDTH: self.rect.right = constants.SCREEN_WIDTH
 
     def get_surf(self):
         if self.timer % self.interval == 0:
