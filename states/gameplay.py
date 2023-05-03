@@ -22,7 +22,7 @@ FREEZE = pygame.USEREVENT + 3
 import math
 
 class Gameplay(BaseState):
-    def __init__(self, players):
+    def __init__(self, players: list):
         super(Gameplay, self).__init__()
         pygame.time.set_timer(ADDENEMY, 450)
         pygame.time.set_timer(ENEMYSHOOTS, 1000)
@@ -47,7 +47,7 @@ class Gameplay(BaseState):
         self.players = players
         # self.player = AI_Player(self.sprites,-1,-1,-1,-1) if not player else player
 
-        for player in players:
+        for player in self.players:
             player.start(spritesheet.SpriteSheet(constants.SPRITE_SHEET))
             self.all_sprites.add(player)
 
@@ -159,28 +159,29 @@ class Gameplay(BaseState):
 
     def enemy_shoots(self):
         for player in self.players:
-            nr_of_enemies = len(self.all_enemies)
-            if nr_of_enemies > 0:
-                enemy_index = random.randint(0, nr_of_enemies - 1)
-                start_rocket = None
-                for index, enemy in enumerate(self.all_enemies):
-                    if index == enemy_index:
-                        start_rocket = enemy.rect.center
+            if not player.freeze:
+                nr_of_enemies = len(self.all_enemies)
+                if nr_of_enemies > 0:
+                    enemy_index = random.randint(0, nr_of_enemies - 1)
+                    start_rocket = None
+                    for index, enemy in enumerate(self.all_enemies):
+                        if index == enemy_index:
+                            start_rocket = enemy.rect.center
 
-                if start_rocket[1] < 400:
-                    ySpeed = 7
-                    dx = player.rect.centerx - start_rocket[0]
-                    dy = player.rect.centery - start_rocket[1]
+                    if start_rocket[1] < 400:
+                        ySpeed = 7
+                        dx = player.rect.centerx - start_rocket[0]
+                        dy = player.rect.centery - start_rocket[1]
 
-                    number_of_steps = dy / ySpeed
-                    xSpeed = dx / number_of_steps
+                        number_of_steps = dy / ySpeed
+                        xSpeed = dx / number_of_steps
 
-                    rocket = Rocket(self.sprites, xSpeed, ySpeed)
-                    rocket.rect.centerx = start_rocket[0]
-                    rocket.rect.centery = start_rocket[1]
+                        rocket = Rocket(self.sprites, xSpeed, ySpeed)
+                        rocket.rect.centerx = start_rocket[0]
+                        rocket.rect.centery = start_rocket[1]
 
-                    self.enemy_rockets.add(rocket)
-                    self.all_sprites.add(rocket)
+                        self.enemy_rockets.add(rocket)
+                        self.all_sprites.add(rocket)
 
     def draw(self, screen):
         self.starfield.render(screen)
@@ -218,21 +219,27 @@ class Gameplay(BaseState):
                 if shoot and len(player.rockets) < 2: self.shoot_rocket(player)
 
         for player in self.players:
-            result = pygame.sprite.groupcollide(player.rockets, player.available_enemies, True, True)
-            if result:
-                for key in result:
-                    player.score += 120
-                    # if self.player.score > self.high_score:
-                    #     self.high_score = self.player.score
-                     
-                    # self.all_sprites.add(Explosion(self.explosion_sprites, key.rect[0], key.rect[1]))
+            if not player.freeze:
+                result = pygame.sprite.groupcollide(player.rockets, player.available_enemies, True, False)
+                if result:
+                    for key in result:
+                        cur_enemy = result[key][0]
+                        player.score += 120
+                        cur_enemy.remove(player.available_enemies)
+                        cur_enemy.times_hit += 1
+                        if cur_enemy.times_hit == len(self.players): cur_enemy.kill()
+                        # if self.player.score > self.high_score:
+                        #     self.high_score = self.player.score
+                        
+                        # self.all_sprites.add(Explosion(self.explosion_sprites, key.rect[0], key.rect[1]))
 
         for player in self.players:
-            result = pygame.sprite.spritecollideany(player, self.enemy_rockets)
-            if result:
-                self.all_sprites.add(Explosion(self.explosion_sprites, result.rect[0], result.rect[1]))
-                player.freeze = True
-                player.kill()
+            if not player.freeze:
+                result = pygame.sprite.spritecollideany(player, self.enemy_rockets)
+                if result:
+                    self.all_sprites.add(Explosion(self.explosion_sprites, result.rect[0], result.rect[1]))
+                    player.freeze = True
+                    player.kill()
 
     def drawPath(self, screen):
         calculator = PathPointCalculator()

@@ -184,7 +184,7 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=4000, net_units=8, N=2
             new_len += 1
         
         # pop = new_pop
-        for player in new_players: play_game(player)
+        play_game(new_players)
         scores = [p.score for p in new_players]
         pop = [(p,s) for p,s in sorted(zip(new_players,scores), key=lambda x: x[1], reverse=True)]     # create list of tuples containing AI_Player and its associated score, sorted by score
 
