@@ -140,6 +140,7 @@ def calc_fitness_scores(players: list):
     fitness_scores = []
     for p in players:
         score = (p.score - mean_score) / (max_score - min_score)
+        if max_time == min_time: max_time +=1 
         time = (p.updates_survived - mean_time) / (max_time - min_time)
         fitness_scores.append((score + time) / 2)
         

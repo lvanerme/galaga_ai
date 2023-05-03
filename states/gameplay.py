@@ -182,6 +182,7 @@ class Gameplay(BaseState):
 
                         self.enemy_rockets.add(rocket)
                         self.all_sprites.add(rocket)
+                        player.targeted_rockets.add(rocket)
 
     def draw(self, screen):
         self.starfield.render(screen)
@@ -235,7 +236,7 @@ class Gameplay(BaseState):
 
         for player in self.players:
             if not player.freeze:
-                result = pygame.sprite.spritecollideany(player, self.enemy_rockets)
+                result = pygame.sprite.spritecollideany(player, player.targeted_rockets)
                 if result:
                     self.all_sprites.add(Explosion(self.explosion_sprites, result.rect[0], result.rect[1]))
                     player.freeze = True

@@ -21,6 +21,7 @@ class Player(pygame.sprite.Sprite):
         self.rockets = pygame.sprite.Group()
         self.available_enemies = pygame.sprite.Group()
         self.freeze = False
+        self.targeted_rockets = pygame.sprite.Group()
 
     def get_event(self, event):
         pass
