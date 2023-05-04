@@ -169,7 +169,7 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, N=2):
         while new_len < pop_size:
             # tourney for new chromosome
             new_c = None
-            if np.sum(scores) == 0: new_c = pop[randrange(pop_size)]
+            if np.sum(scores) == 0: new_c = pop[randrange(pop_size)][0]
             else: 
                 cs = choices(pop, weights=scores, k=N)
                 max_score = -1
