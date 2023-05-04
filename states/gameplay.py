@@ -202,6 +202,7 @@ class Gameplay(BaseState):
         self.draw_info(screen)
 
         # Get info and pass it to AI
+        if self.player.updates_survived >= 1000000: self.done = True
         player_x, player_y = self.get_player_info()
         enemy1_coords, enemy2_coords = self.get_closest_enemies(player_x, player_y)
         rocket1_coords, rocket2_coords, rocket3_coords = self.get_closest_rockets(player_x, player_y)
