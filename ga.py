@@ -202,4 +202,4 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=4000, net_units=8, N=2
         num_iters += 1
 
     
-ga(2, mut_rate=0.3)
+ga(3, mut_rate=0.3)
