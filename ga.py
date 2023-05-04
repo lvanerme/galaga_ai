@@ -1,6 +1,7 @@
 import spritesheet
 import constants
 import math
+import time
 import struct
 import numpy as np
 from main import play_game
@@ -10,11 +11,6 @@ from tensorflow import random_normal_initializer, Variable
 from sprites.ai_player import AI_Player
 
 
-# w_init = tf.random_normal_initializer()
-# w = tf.Variable(initial_value=w_init(shape=(12,), dtype='float32'), trainable=True)
-
-
-# Chromosome = k1, k2, b1, b2
 def gen_seed(net_units, pop_size) -> list:
     pop = []
     for _ in range(pop_size):
@@ -135,6 +131,8 @@ def calc_fitness_scores(players: list):
         if s <= min_score: min_score = s
         if t >= max_time: max_time = t
         if t <= min_time: min_time = t
+
+    if max_time - min_time == 0: max_time += 1
     
     mean_score, mean_time = (sum_scores / num_players), (sum_times / num_players)
     
@@ -146,14 +144,15 @@ def calc_fitness_scores(players: list):
         time = (p.updates_survived - mean_time) / (max_time - min_time)
         fitness_scores.append((score + time) / 2)
         
-    return fitness_scores
+    return fitness_scores, max_score, max_time
         
 
 def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, N=2):
     # gen start pop
+    start = time.time()
     players = gen_seed(net_units, pop_size)
     for player in players: play_game(player)  
-    scores = calc_fitness_scores(players)
+    scores, max_score, max_time = calc_fitness_scores(players)
     pop = [(p,s) for p,s in sorted(zip(players,scores), key=lambda x: x[1], reverse=True)]     # create list of tuples containing AI_Player and its associated score, sorted by score
     best_score = pop[0][1]      
     
@@ -161,7 +160,7 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, N=2):
     num_iters = 0
     out_file = open("output_basic.txt", "w")
     while num_iters < max_iters:
-        new_players, new_len = [pop[i][0] for i in range(5)], 5         # grab 5 best from previous gen and automatically add them to new_pop
+        # new_players, new_len = [pop[i][0] for i in range(5)], 5         # grab 5 best from previous gen and automatically add them to new_pop
         new_players, new_len = [], 0
         for player in new_players: 
             if random() <= mut_rate: player = mutation(player)
@@ -169,13 +168,16 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, N=2):
         # gen new pop
         while new_len < pop_size:
             # tourney for new chromosome
-            cs = choices(pop, weights=scores, k=N)
-            new_c, max_score = None, -1
-            for c in cs:
-                s = c[1]
-                if s > max_score:
-                    new_c = c[0]
-                    max_score = s
+            new_c = None
+            if np.sum(scores) == 0: new_c = pop[randrange(pop_size)]
+            else: 
+                cs = choices(pop, weights=scores, k=N)
+                max_score = -1
+                for c in cs:
+                    s = c[1]
+                    if s > max_score:
+                        new_c = c[0]
+                        max_score = s
             
             if random() <= mut_rate: new_c = mutation(new_c)
             
@@ -188,8 +190,10 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, N=2):
         
         # pop = new_pop
         for player in new_players: play_game(player)
-        scores = calc_fitness_scores(players)
+        scores, new_max_score, new_max_time = calc_fitness_scores(players)
         pop = [(p,s) for p,s in sorted(zip(new_players,scores), key=lambda x: x[1], reverse=True)]     # create list of tuples containing AI_Player and its associated score, sorted by score
+        if new_max_score > max_score: max_score = new_max_score
+        if new_max_time > max_time: max_time = new_max_time
 
         # eval gen
         gen_max, count = max(scores), 0
@@ -201,9 +205,13 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, N=2):
         gen_avg = np.average(scores)
         # if p:   # should we print stats?
         # print(f'{num_iters = }\n\t{best_score = }\t{gen_avg = }\tconsensus rate = {percent_max}')
-        out_file.write(f'{num_iters = }\n\t{best_score = }\t{gen_avg = }\tconsensus rate = {percent_max}\n')
+        out_file.write(f'{num_iters = }\n\tbest fitness score = {best_score}\t{gen_avg = }\tconsensus rate = {percent_max}\t{max_score = }\t{max_time = }\n')
         num_iters += 1
+
+    end = time.time()
+    out_file.write(f'{start = }\t{end = }\n')
     out_file.close()
 
+
     
-ga(10, mut_rate=0.3)
+ga(3, mut_rate=0.3, max_iters=100)
