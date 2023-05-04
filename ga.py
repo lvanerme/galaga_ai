@@ -161,7 +161,7 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, N=2):
     num_iters = 0
     out_file = open("output_basic.txt", "w")
     while num_iters < max_iters:
-        # new_players, new_len = [pop[i][0] for i in range(5)], 5         # grab 5 best from previous gen and automatically add them to new_pop
+        new_players, new_len = [pop[i][0] for i in range(5)], 5         # grab 5 best from previous gen and automatically add them to new_pop
         new_players, new_len = [], 0
         for player in new_players: 
             if random() <= mut_rate: player = mutation(player)
@@ -188,7 +188,7 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, N=2):
         
         # pop = new_pop
         for player in new_players: play_game(player)
-        scores = [p.score for p in new_players]
+        scores = calc_fitness_scores(players)
         pop = [(p,s) for p,s in sorted(zip(new_players,scores), key=lambda x: x[1], reverse=True)]     # create list of tuples containing AI_Player and its associated score, sorted by score
 
         # eval gen
