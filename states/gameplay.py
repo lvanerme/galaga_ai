@@ -205,7 +205,8 @@ class Gameplay(BaseState):
         player_x, player_y = self.get_player_info()
         enemy1_coords, enemy2_coords = self.get_closest_enemies(player_x, player_y)
         rocket1_coords, rocket2_coords, rocket3_coords = self.get_closest_rockets(player_x, player_y)
-        shoot = self.player.update(player_x, player_y, enemy1_coords, enemy2_coords, rocket1_coords, rocket2_coords, rocket3_coords)
+        dist_to_left, dist_to_right = self.player.rect.left, (constants.SCREEN_WIDTH - self.player.rect.right)
+        shoot = self.player.update(player_x, player_y, enemy1_coords, enemy2_coords, rocket1_coords, rocket2_coords, rocket3_coords, dist_to_left, dist_to_right)
         if shoot and len(self.all_rockets) < 2: self.shoot_rocket()
 
         # Uncomment for player two
