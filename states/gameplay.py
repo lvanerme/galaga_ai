@@ -46,10 +46,12 @@ class Gameplay(BaseState):
         self.all_sprites = pygame.sprite.Group()
         self.players = players
         # self.player = AI_Player(self.sprites,-1,-1,-1,-1) if not player else player
-
+        player_num = 1
         for player in self.players:
             player.start(spritesheet.SpriteSheet(constants.SPRITE_SHEET))
             self.all_sprites.add(player)
+            player.player_num = player_num
+            player_num += 1
 
         # self.player.start(spritesheet.SpriteSheet(constants.SPRITE_SHEET))
         # self.all_sprites = pygame.sprite.Group()
@@ -70,26 +72,29 @@ class Gameplay(BaseState):
         self.mover.align_all()
 
     def startup(self):
-        pygame.mixer.music.load('./assets/sounds/02 Start Music.mp3')
-        pygame.mixer.music.play()
-        # NOTE: commented out this line to get game to initialize with given values in gameplay
-        # self.player = AI_Player(-1,-1,-1,-1)
-        self.all_sprites = pygame.sprite.Group()
+        pass
+        # pygame.mixer.music.load('./assets/sounds/02 Start Music.mp3')
+        # pygame.mixer.music.play()
+        # # NOTE: commented out this line to get game to initialize with given values in gameplay
+        # # self.player = AI_Player(-1,-1,-1,-1)
+        # self.all_sprites = pygame.sprite.Group()
+        # player_num = 1
+        # for player in self.players:
+        #     self.all_sprites.add(player)
+        #     player.player_num = player_num
+        #     player_num += 1
 
-        for player in self.players:
-            self.all_sprites.add(player)
+        # self.wave_count = 0
+        # self.enemies = 0
+        # self.number_of_enemies = 10
+        # # self.freeze = False
 
-        self.wave_count = 0
-        self.enemies = 0
-        self.number_of_enemies = 10
-        # self.freeze = False
-
-        self.all_enemies = pygame.sprite.Group()
-        self.enemy_rockets = pygame.sprite.Group()
-        self.shoot_sound = pygame.mixer.Sound("./assets/sounds/13 Fighter Shot1.mp3")
-        self.kill_sound = pygame.mixer.Sound("./assets/sounds/kill.mp3")
-        self.show_control = False
-        self.mover.align_all()
+        # self.all_enemies = pygame.sprite.Group()
+        # self.enemy_rockets = pygame.sprite.Group()
+        # self.shoot_sound = pygame.mixer.Sound("./assets/sounds/13 Fighter Shot1.mp3")
+        # self.kill_sound = pygame.mixer.Sound("./assets/sounds/kill.mp3")
+        # self.show_control = False
+        # self.mover.align_all()
 
     def add_control_points(self):
         for quartet_index in range(self.control_points1.number_of_quartets()):
@@ -150,7 +155,7 @@ class Gameplay(BaseState):
             player.available_enemies.add(enemy2)
 
     def shoot_rocket(self, player):
-        rocket = Rocket(self.sprites, 0, -15)
+        rocket = Rocket(self.sprites, 0, -15, player.player_num)
         rocket.rect.centerx = player.rect.centerx
         player.rockets.add(rocket)
         # self.all_rockets.add(rocket)
@@ -176,7 +181,7 @@ class Gameplay(BaseState):
                         number_of_steps = dy / ySpeed
                         xSpeed = dx / number_of_steps
 
-                        rocket = Rocket(self.sprites, xSpeed, ySpeed)
+                        rocket = Rocket(self.sprites, xSpeed, ySpeed, player.player_num)
                         rocket.rect.centerx = start_rocket[0]
                         rocket.rect.centery = start_rocket[1]
 
@@ -197,6 +202,11 @@ class Gameplay(BaseState):
 
         for entity in self.all_sprites:
             screen.blit(entity.get_surf(), entity.rect)
+            if type(entity) == Rocket or type(entity) == AI_Player:
+                text = self.font.render(f"{entity.player_num}", True, (255,0,0))
+                if entity.player_num == 1:
+                    screen.blit(text, (entity.rect.center[0]-15, entity.rect.center[1]))
+                else: screen.blit(text, (entity.rect.center[0], entity.rect.center[1]))
 
         # if self.show_control:
         #     for entity in self.control_sprites:

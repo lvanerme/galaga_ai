@@ -18,6 +18,7 @@ class AI_Player(Player):
         self.output_bs = output_bs
         self.model = self.configure_model(input_hidden_ws, hidden_bs, hidden_output_ws, output_bs)
         self.updates_survived = 0
+        self.player_num = 0
     
     
     def start(self, sprites):
