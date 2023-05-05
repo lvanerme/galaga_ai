@@ -20,7 +20,7 @@ def gen_seed(net_units, pop_size) -> list:
     for _ in range(pop_size):
         # weights for one chromosome
         input_hidden_w_init, hidden_b_init, hidden_output_w_init, output_b_init = random_normal_initializer(), random_normal_initializer(), random_normal_initializer(), random_normal_initializer()
-        input_hidden_ws_tf = Variable(initial_value = input_hidden_w_init(shape=(12, net_units), dtype='float32'), trainable=True)
+        input_hidden_ws_tf = Variable(initial_value = input_hidden_w_init(shape=(14, net_units), dtype='float32'), trainable=True)
         hidden_bs_tf = Variable(initial_value = hidden_b_init(shape=(net_units,), dtype='float32'), trainable=True)
         hidden_output_ws_tf = Variable(initial_value = hidden_output_w_init(shape=(net_units, 4), dtype='float32'), trainable=True)
         output_bs_tf = Variable(initial_value = output_b_init(shape=(4,), dtype='float32'), trainable=True)
@@ -139,8 +139,9 @@ def calc_fitness_scores(players: list):
     
     fitness_scores = []
     for p in players:
-        score = (p.score - mean_score) / (max_score - min_score)
-        if max_time == min_time: max_time +=1 
+        if max_score == 0: score = 0
+        else: score = (p.score - mean_score) / (max_score - min_score)
+        
         time = (p.updates_survived - mean_time) / (max_time - min_time)
         fitness_scores.append((score + time) / 2)
         
