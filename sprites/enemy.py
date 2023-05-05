@@ -34,6 +34,8 @@ class Enemy(pygame.sprite.Sprite):
         self.previous_point = None
         self.rotation_calc = 0
 
+        self.times_hit = 0
+
     def get_event(self, event):
         pass
 

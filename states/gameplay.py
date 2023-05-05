@@ -22,7 +22,7 @@ FREEZE = pygame.USEREVENT + 3
 import math
 
 class Gameplay(BaseState):
-    def __init__(self, player:AI_Player=None):
+    def __init__(self, players: list):
         super(Gameplay, self).__init__()
         pygame.time.set_timer(ADDENEMY, 450)
         pygame.time.set_timer(ENEMYSHOOTS, 1000)
@@ -42,24 +42,29 @@ class Gameplay(BaseState):
         self.mover = ControlHandlerMover(self.control_points1, self.path_point_selector)
         self.control_sprites = pygame.sprite.Group()
         self.add_control_points()
-        self.player = AI_Player(self.sprites,-1,-1,-1,-1) if not player else player
-        self.player.start(spritesheet.SpriteSheet(constants.SPRITE_SHEET))
-        self.all_sprites = pygame.sprite.Group()
-        self.all_sprites.add(self.player)
         
-        # Uncomment for player two
-        # self.player2 = AI_Player(self.sprites,-1,-1,-1,-1)
-        # self.all_sprites.add(self.player2)
+        self.all_sprites = pygame.sprite.Group()
+        self.players = players
+        # self.player = AI_Player(self.sprites,-1,-1,-1,-1) if not player else player
+        player_num = 1
+        for player in self.players:
+            player.start(spritesheet.SpriteSheet(constants.SPRITE_SHEET))
+            self.all_sprites.add(player)
+            player.player_num = player_num
+            player_num += 1
+
+        # self.player.start(spritesheet.SpriteSheet(constants.SPRITE_SHEET))
+        # self.all_sprites = pygame.sprite.Group()
+        # self.all_sprites.add(self.player)            
 
         self.wave_count = 0
         self.enemies = 0
         self.number_of_enemies = 13
-        # self.score = 0
         self.high_score = 0
-        self.freeze = False
+        # self.freeze = False
 
         self.all_enemies = pygame.sprite.Group()
-        self.all_rockets = pygame.sprite.Group()
+        # self.all_rockets = pygame.sprite.Group()
         self.enemy_rockets = pygame.sprite.Group()
         self.shoot_sound = pygame.mixer.Sound("./assets/sounds/13 Fighter Shot1.mp3")
         self.kill_sound = pygame.mixer.Sound("./assets/sounds/kill.mp3")
@@ -67,30 +72,29 @@ class Gameplay(BaseState):
         self.mover.align_all()
 
     def startup(self):
-        pygame.mixer.music.load('./assets/sounds/02 Start Music.mp3')
-        pygame.mixer.music.play()
-        # NOTE: commented out this line to get game to initialize with given values in gameplay
-        # self.player = AI_Player(-1,-1,-1,-1)
-        self.all_sprites = pygame.sprite.Group()
+        pass
+        # pygame.mixer.music.load('./assets/sounds/02 Start Music.mp3')
+        # pygame.mixer.music.play()
+        # # NOTE: commented out this line to get game to initialize with given values in gameplay
+        # # self.player = AI_Player(-1,-1,-1,-1)
+        # self.all_sprites = pygame.sprite.Group()
+        # player_num = 1
+        # for player in self.players:
+        #     self.all_sprites.add(player)
+        #     player.player_num = player_num
+        #     player_num += 1
 
-        # Uncomment for player two
-        # self.player2 = AI_Player(self.sprites,-1,-1,-1,-1)
-        # self.all_sprites.add(self.player2)
+        # self.wave_count = 0
+        # self.enemies = 0
+        # self.number_of_enemies = 10
+        # # self.freeze = False
 
-        self.all_sprites.add(self.player)
-        self.wave_count = 0
-        self.enemies = 0
-        self.number_of_enemies = 10
-        # self.score = 0
-        self.freeze = False
-
-        self.all_enemies = pygame.sprite.Group()
-        self.all_rockets = pygame.sprite.Group()
-        self.enemy_rockets = pygame.sprite.Group()
-        self.shoot_sound = pygame.mixer.Sound("./assets/sounds/13 Fighter Shot1.mp3")
-        self.kill_sound = pygame.mixer.Sound("./assets/sounds/kill.mp3")
-        self.show_control = False
-        self.mover.align_all()
+        # self.all_enemies = pygame.sprite.Group()
+        # self.enemy_rockets = pygame.sprite.Group()
+        # self.shoot_sound = pygame.mixer.Sound("./assets/sounds/13 Fighter Shot1.mp3")
+        # self.kill_sound = pygame.mixer.Sound("./assets/sounds/kill.mp3")
+        # self.show_control = False
+        # self.mover.align_all()
 
     def add_control_points(self):
         for quartet_index in range(self.control_points1.number_of_quartets()):
@@ -118,17 +122,19 @@ class Gameplay(BaseState):
         if event.type == ENEMYSHOOTS:
             self.enemy_shoots()
         if event.type == FREEZE:
-            if self.freeze:
-                self.done = True
+            self.done = True
+            for player in self.players:
+                if not player.freeze:
+                    self.done = False
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_ESCAPE:
                 self.control_points1.save_control_points()
                 self.done = True
-            if event.key == pygame.K_s:
-                self.show_control = not self.show_control
-            if event.key == pygame.K_SPACE:
-                if len(self.all_rockets) < 2:
-                    self.shoot_rocket()
+        #     if event.key == pygame.K_s:
+        #         self.show_control = not self.show_control
+        #     if event.key == pygame.K_SPACE:
+        #         if len(self.all_rockets) < 2:
+        #             self.shoot_rocket()
 
     def add_enemy(self):
         self.enemies += 1
@@ -144,36 +150,44 @@ class Gameplay(BaseState):
         self.all_enemies.add(enemy2)
         self.all_sprites.add(enemy2)
 
-    def shoot_rocket(self):
-        rocket = Rocket(self.sprites, 0, -15)
-        rocket.rect.centerx = self.player.rect.centerx
-        self.all_rockets.add(rocket)
+        for player in self.players:
+            player.available_enemies.add(enemy1)
+            player.available_enemies.add(enemy2)
+
+    def shoot_rocket(self, player):
+        rocket = Rocket(self.sprites, 0, -15, player.player_num)
+        rocket.rect.centerx = player.rect.centerx
+        player.rockets.add(rocket)
+        # self.all_rockets.add(rocket)
         self.all_sprites.add(rocket)
         self.shoot_sound.play()
 
     def enemy_shoots(self):
-        nr_of_enemies = len(self.all_enemies)
-        if nr_of_enemies > 0:
-            enemy_index = random.randint(0, nr_of_enemies - 1)
-            start_rocket = None
-            for index, enemy in enumerate(self.all_enemies):
-                if index == enemy_index:
-                    start_rocket = enemy.rect.center
+        for player in self.players:
+            if not player.freeze:
+                nr_of_enemies = len(self.all_enemies)
+                if nr_of_enemies > 0:
+                    enemy_index = random.randint(0, nr_of_enemies - 1)
+                    start_rocket = None
+                    for index, enemy in enumerate(self.all_enemies):
+                        if index == enemy_index:
+                            start_rocket = enemy.rect.center
 
-            if start_rocket[1] < 400:
-                ySpeed = 7
-                dx = self.player.rect.centerx - start_rocket[0]
-                dy = self.player.rect.centery - start_rocket[1]
+                    if start_rocket[1] < 400:
+                        ySpeed = 7
+                        dx = player.rect.centerx - start_rocket[0]
+                        dy = player.rect.centery - start_rocket[1]
 
-                number_of_steps = dy / ySpeed
-                xSpeed = dx / number_of_steps
+                        number_of_steps = dy / ySpeed
+                        xSpeed = dx / number_of_steps
 
-                rocket = Rocket(self.sprites, xSpeed, ySpeed)
-                rocket.rect.centerx = start_rocket[0]
-                rocket.rect.centery = start_rocket[1]
+                        rocket = Rocket(self.sprites, xSpeed, ySpeed, player.player_num)
+                        rocket.rect.centerx = start_rocket[0]
+                        rocket.rect.centery = start_rocket[1]
 
-                self.enemy_rockets.add(rocket)
-                self.all_sprites.add(rocket)
+                        self.enemy_rockets.add(rocket)
+                        self.all_sprites.add(rocket)
+                        player.targeted_rockets.add(rocket)
 
     def draw(self, screen):
         self.starfield.render(screen)
@@ -188,6 +202,11 @@ class Gameplay(BaseState):
 
         for entity in self.all_sprites:
             screen.blit(entity.get_surf(), entity.rect)
+            if type(entity) == Rocket or type(entity) == AI_Player:
+                text = self.font.render(f"{entity.player_num}", True, (255,0,0))
+                if entity.player_num == 1:
+                    screen.blit(text, (entity.rect.center[0]-15, entity.rect.center[1]))
+                else: screen.blit(text, (entity.rect.center[0], entity.rect.center[1]))
 
         # if self.show_control:
         #     for entity in self.control_sprites:
@@ -199,42 +218,40 @@ class Gameplay(BaseState):
         self.draw_score(screen)
 
         # Draw info to screen
-        self.draw_info(screen)
+        # self.draw_info(screen)
 
         # Get info and pass it to AI
-        if self.player.updates_survived >= 1000000: self.done = True
-        player_x, player_y = self.get_player_info()
-        enemy1_coords, enemy2_coords = self.get_closest_enemies(player_x, player_y)
-        rocket1_coords, rocket2_coords, rocket3_coords = self.get_closest_rockets(player_x, player_y)
-        dist_to_left, dist_to_right = self.player.rect.left, (constants.SCREEN_WIDTH - self.player.rect.right)
-        shoot = self.player.update(player_x, player_y, enemy1_coords, enemy2_coords, rocket1_coords, rocket2_coords, rocket3_coords, dist_to_left, dist_to_right)
-        if shoot and len(self.all_rockets) < 2: self.shoot_rocket()
+        for player in self.players:
+            if not player.freeze:
+                player_x, player_y = self.get_player_info(player)
+                enemy1_coords, enemy2_coords = self.get_closest_enemies(player_x, player_y)
+                rocket1_coords, rocket2_coords, rocket3_coords = self.get_closest_rockets(player_x, player_y)
+                dist_to_left, dist_to_right = player.rect.left, (constants.SCREEN_WIDTH - player.rect.right)
+                shoot = player.update(player_x, player_y, enemy1_coords, enemy2_coords, rocket1_coords, rocket2_coords, rocket3_coords, dist_to_left, dist_to_right)
+                if shoot and len(player.rockets) < 2: self.shoot_rocket(player)
 
-        # Uncomment for player two
-        # player2_x, player2_y = self.player2.rect.x, self.player2.rect.y
-        # enemy1_coords, enemy2_coords = self.get_closest_enemies(player2_x, player2_y)
-        # rocket1_coords, rocket2_coords, rocket3_coords = self.get_closest_rockets(player2_x, player2_y)
-        # shoot = self.player2.update(player2_x, player2_y, enemy1_coords, enemy2_coords, rocket1_coords, rocket2_coords, rocket3_coords)
-        # # if shoot and len(self.all_rockets) < 2: self.shoot_rocket()
+        for player in self.players:
+            if not player.freeze:
+                result = pygame.sprite.groupcollide(player.rockets, player.available_enemies, True, False)
+                if result:
+                    for key in result:
+                        cur_enemy = result[key][0]
+                        player.score += 120
+                        cur_enemy.remove(player.available_enemies)
+                        cur_enemy.times_hit += 1
+                        if cur_enemy.times_hit == len(self.players): cur_enemy.kill()
+                        # if self.player.score > self.high_score:
+                        #     self.high_score = self.player.score
+                        
+                        # self.all_sprites.add(Explosion(self.explosion_sprites, key.rect[0], key.rect[1]))
 
-        result = pygame.sprite.groupcollide(self.all_rockets, self.all_enemies, True, True)
-        if result:
-            for key in result:
-                self.player.score += 120
-                if self.player.score > self.high_score:
-                    self.high_score = self.player.score
-                self.all_sprites.add(Explosion(self.explosion_sprites, key.rect[0], key.rect[1]))
-                self.kill_sound.play()
-
-        result = pygame.sprite.spritecollideany(self.player, self.enemy_rockets)
-        if result:
-            self.all_sprites.add(Explosion(self.explosion_sprites, result.rect[0], result.rect[1]))
-            self.all_sprites.add(Explosion(self.explosion_sprites, result.rect[0] - 30, result.rect[1] - 30))
-            self.all_sprites.add(Explosion(self.explosion_sprites, result.rect[0] + 30, result.rect[1] + 30))
-            self.all_sprites.add(Explosion(self.explosion_sprites, result.rect[0], result.rect[1] - 30))
-            self.kill_sound.play()
-            self.freeze = True
-            self.player.kill()
+        for player in self.players:
+            if not player.freeze:
+                result = pygame.sprite.spritecollideany(player, player.targeted_rockets)
+                if result:
+                    self.all_sprites.add(Explosion(self.explosion_sprites, result.rect[0], result.rect[1]))
+                    player.freeze = True
+                    player.kill()
 
     def drawPath(self, screen):
         calculator = PathPointCalculator()
@@ -257,19 +274,26 @@ class Gameplay(BaseState):
             pygame.draw.line(screen, (255, 255, 255), pair[0], pair[1])
 
     def draw_score(self, screen):
-        score = self.font.render('SCORE', True, (255, 20, 20))
-        screen.blit(score, (constants.SCREEN_WIDTH / 2 - 300 - score.get_rect().width / 2, 10))
-        score = self.font.render(str(self.high_score), True, (255, 255, 255))
-        screen.blit(score, (constants.SCREEN_WIDTH / 2 - 300 - score.get_rect().width / 2, 40))
-
-        score = self.font.render('HIGH SCORE', True, (255, 20, 20))
-        screen.blit(score, (constants.SCREEN_WIDTH / 2 - score.get_rect().width / 2, 10))
-        score = self.font.render(str(self.high_score), True, (255, 255, 255))
-        screen.blit(score, (constants.SCREEN_WIDTH / 2 - score.get_rect().width / 2, 40))
+        score_y = 10
+        for num, player in enumerate(self.players):
+            score = self.font.render(f"Player {num+1} score: {player.score}", True, (255, 255, 255))
+            screen.blit(score, (10, score_y))
+            score_y += 20
 
 
-    def get_player_info(self):
-        return self.player.rect.x, self.player.rect.y
+        # score = self.font.render('SCORE', True, (255, 20, 20))
+        # screen.blit(score, (constants.SCREEN_WIDTH / 2 - 300 - score.get_rect().width / 2, 10))
+        # score = self.font.render(str(self.high_score), True, (255, 255, 255))
+        # screen.blit(score, (constants.SCREEN_WIDTH / 2 - 300 - score.get_rect().width / 2, 40))
+
+        # score = self.font.render('HIGH SCORE', True, (255, 20, 20))
+        # screen.blit(score, (constants.SCREEN_WIDTH / 2 - score.get_rect().width / 2, 10))
+        # score = self.font.render(str(self.high_score), True, (255, 255, 255))
+        # screen.blit(score, (constants.SCREEN_WIDTH / 2 - score.get_rect().width / 2, 40))
+
+
+    def get_player_info(self, player):
+        return player.rect.x, player.rect.y
     
     
     def get_closest_enemies(self, player_x, player_y):

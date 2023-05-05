@@ -31,7 +31,6 @@ def gen_seed(net_units, pop_size) -> list:
             for val in row: hidden_output_ws.append(val.numpy())
             
         for val in output_bs_tf: output_bs.append(val.numpy())
-            
         pop.append(AI_Player(input_hidden_ws, hidden_bs, hidden_output_ws, output_bs))
         
     return pop
@@ -153,6 +152,11 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, N=2):
     players = gen_seed(net_units, pop_size)
     for player in players: play_game(player)  
     scores, max_score, max_time = calc_fitness_scores(players)
+    for i in range(1, pop_size, 2):
+        sub_players = [players[i-1], players[i]]
+        play_game(sub_players)
+    # for player in players: play_game(player) 
+    scores = calc_fitness_scores(players)
     pop = [(p,s) for p,s in sorted(zip(players,scores), key=lambda x: x[1], reverse=True)]     # create list of tuples containing AI_Player and its associated score, sorted by score
     best_score = pop[0][1]      
     
@@ -191,6 +195,11 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, N=2):
         # pop = new_pop
         for player in new_players: play_game(player)
         scores, new_max_score, new_max_time = calc_fitness_scores(players)
+        for i in range(1, pop_size, 2):
+            sub_players = [new_players[i-1], new_players[i]]
+            play_game(sub_players)
+        # play_game(new_players)
+        scores = [p.score for p in new_players]
         pop = [(p,s) for p,s in sorted(zip(new_players,scores), key=lambda x: x[1], reverse=True)]     # create list of tuples containing AI_Player and its associated score, sorted by score
         if new_max_score > max_score: max_score = new_max_score
         if new_max_time > max_time: max_time = new_max_time
@@ -214,4 +223,4 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, N=2):
 
 
     
-ga(3, mut_rate=0.3, max_iters=100)
+ga(10, mut_rate=0.3, max_iters=100)
