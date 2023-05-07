@@ -224,12 +224,4 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, N=2):
 
 
     
-<<<<<<< HEAD
-    if random() <= cross_rate: new_c = crossover(c1, c2)
-    else: new_c = c1 if c1.score >= c2.score else c2 
-    
-    
-ga(2)
-=======
 ga(50, mut_rate=0.3, max_iters=100)
->>>>>>> main

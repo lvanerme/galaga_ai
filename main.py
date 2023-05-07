@@ -10,9 +10,9 @@ import constants
 
 def play_game(players=None):
     # setup mixer to avoid sound lag
-    pygame.mixer.pre_init(44100, -16, 2, 2048)
+    # pygame.mixer.pre_init(44100, -16, 2, 2048)
     pygame.init()
-    pygame.mixer.init()
+    # pygame.mixer.init()
     screen = pygame.display.set_mode((constants.SCREEN_WIDTH,
                                     constants.SCREEN_HEIGHT))
     states = {

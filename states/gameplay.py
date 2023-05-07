@@ -66,8 +66,8 @@ class Gameplay(BaseState):
         self.all_enemies = pygame.sprite.Group()
         # self.all_rockets = pygame.sprite.Group()
         self.enemy_rockets = pygame.sprite.Group()
-        self.shoot_sound = pygame.mixer.Sound("./assets/sounds/13 Fighter Shot1.mp3")
-        self.kill_sound = pygame.mixer.Sound("./assets/sounds/kill.mp3")
+        # self.shoot_sound = pygame.mixer.Sound("./assets/sounds/13 Fighter Shot1.mp3")
+        # self.kill_sound = pygame.mixer.Sound("./assets/sounds/kill.mp3")
         self.show_control = False
         self.mover.align_all()
 
@@ -160,7 +160,7 @@ class Gameplay(BaseState):
         player.rockets.add(rocket)
         # self.all_rockets.add(rocket)
         self.all_sprites.add(rocket)
-        self.shoot_sound.play()
+        # self.shoot_sound.play()
 
     def enemy_shoots(self):
         for player in self.players:
