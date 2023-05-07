@@ -18,6 +18,10 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.surf.get_rect(center=(constants.SCREEN_WIDTH / 2, constants.SCREEN_HEIGHT - 40))
         self.image_index = 0
         self.score = 0
+        self.rockets = pygame.sprite.Group()
+        self.available_enemies = pygame.sprite.Group()
+        self.freeze = False
+        self.targeted_rockets = pygame.sprite.Group()
 
     def get_event(self, event):
         pass
@@ -25,15 +29,11 @@ class Player(pygame.sprite.Sprite):
     def update(self, pressed_keys):
         self.timer += 1
 
-        if pressed_keys[K_LEFT]:
-            self.rect.move_ip(-5, 0)
-        if pressed_keys[K_RIGHT]:
-            self.rect.move_ip(5, 0)
+        if pressed_keys[K_LEFT]: self.rect.move_ip(-5, 0)
+        if pressed_keys[K_RIGHT]: self.rect.move_ip(5, 0)
 
-        if self.rect.left < 0:
-            self.rect.left = 0
-        if self.rect.right > constants.SCREEN_WIDTH:
-            self.rect.right = constants.SCREEN_WIDTH
+        if self.rect.left < 0: self.rect.left = 0
+        if self.rect.right > constants.SCREEN_WIDTH: self.rect.right = constants.SCREEN_WIDTH
 
     def get_surf(self):
         if self.timer % self.interval == 0:
