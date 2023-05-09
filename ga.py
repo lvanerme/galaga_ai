@@ -137,10 +137,11 @@ def calc_fitness_scores(players: list):
     
     fitness_scores = []
     for p in players:
-        if max_score == 0: score = 0
+        if max_score == min_score: score = max_score
         else: score = (p.score - mean_score) / (max_score - min_score)
         
-        time = (p.updates_survived - mean_time) / (max_time - min_time)
+        if max_time == min_time: time = max_time
+        else: time = (p.updates_survived - mean_time) / (max_time - min_time)
         fitness_scores.append((score + time) / 2)
         
     return fitness_scores, max_score, max_time
@@ -151,13 +152,13 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, N=2):
     start = time.time()
     players = gen_seed(net_units, pop_size)
     #Grab subset of population to make game run faster
-    for i in range(1, pop_size, 2):
-        sub_players = [players[i-1], players[i]]
+    for i in range(0, pop_size-1, 2):
+        sub_players = [players[i], players[i+1]]
         play_game(sub_players)
 
     scores, max_score, max_time = calc_fitness_scores(players)
     # for player in players: play_game(player) 
-    scores = calc_fitness_scores(players)
+    # scores = calc_fitness_scores(players)
     pop = [(p,s) for p,s in sorted(zip(players,scores), key=lambda x: x[1], reverse=True)]     # create list of tuples containing AI_Player and its associated score, sorted by score
     best_score = pop[0][1]      
     
@@ -194,13 +195,13 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, N=2):
             new_len += 1
         
         # pop = new_pop
-        for i in range(1, pop_size, 2):
-            sub_players = [new_players[i-1], new_players[i]]
+        for i in range(0, pop_size-1, 2):
+            sub_players = [new_players[i], new_players[i+1]]
             play_game(sub_players)
 
-        scores, new_max_score, new_max_time = calc_fitness_scores(players)
+        scores, new_max_score, new_max_time = calc_fitness_scores(new_players)
         # play_game(new_players)
-        scores = [p.score for p in new_players]
+        # scores = [p.score for p in new_players]
         pop = [(p,s) for p,s in sorted(zip(new_players,scores), key=lambda x: x[1], reverse=True)]     # create list of tuples containing AI_Player and its associated score, sorted by score
         if new_max_score > max_score: max_score = new_max_score
         if new_max_time > max_time: max_time = new_max_time
@@ -226,4 +227,4 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, N=2):
 
 
     
-ga(50, mut_rate=0.3, max_iters=100)
+ga(4, mut_rate=0.3, max_iters=100)

@@ -1,8 +1,0 @@
-num_iters = 0
-	best fitness score = 0.4670079635949943	gen_avg = 0.0	consensus rate = 0.3333333333333333	max_score = 1080	max_time = 648
-num_iters = 1
-	best fitness score = 0.4670079635949943	gen_avg = 0.0	consensus rate = 0.3333333333333333	max_score = 1080	max_time = 648
-num_iters = 2
-	best fitness score = 0.4670079635949943	gen_avg = 0.0	consensus rate = 0.3333333333333333	max_score = 1080	max_time = 648
-num_iters = 3
-	best fitness score = 0.4670079635949943	gen_avg = 0.0	consensus rate = 0.3333333333333333	max_score = 1080	max_time = 648
