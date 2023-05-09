@@ -9,6 +9,7 @@ from sys import maxsize
 from random import random, randrange, randint, uniform, choices
 from tensorflow import random_normal_initializer, Variable
 from sprites.ai_player import AI_Player
+from copy import deepcopy
 
 
 def gen_seed(net_units, pop_size) -> list:
@@ -185,13 +186,15 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, N=2):
                         new_c = c[0]
                         max_score = s
             
-            if random() <= mut_rate: new_c = mutation(new_c)
+            c = AI_Player(new_c.input_hidden_ws, new_c.hidden_bs, new_c.hidden_output_ws, new_c.output_bs)
+            del new_c
+            if random() <= mut_rate: c = mutation(c)
             
             # No crossover?
             # if random() <= cross_rate: new_c = crossover(c1, c2)
             # else: new_c = c1 if c1.score >= c2.score else c2 
             
-            new_players.append(new_c)
+            new_players.append(c)
             new_len += 1
         
         # pop = new_pop
