@@ -215,6 +215,8 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, N=2):
         gen_avg = np.average(scores)
         # if p:   # should we print stats?
         # print(f'{num_iters = }\n\t{best_score = }\t{gen_avg = }\tconsensus rate = {percent_max}')
+        print(f'{num_iters = }\n\tbest fitness score = {best_score}\t{gen_avg = }\tconsensus rate = {percent_max}\t{max_score = }\t{max_time = }\n')
+
         out_file.write(f'{num_iters = }\n\tbest fitness score = {best_score}\t{gen_avg = }\tconsensus rate = {percent_max}\t{max_score = }\t{max_time = }\n')
         num_iters += 1
 
