@@ -159,7 +159,6 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, N=2):
 
     scores, max_score, max_time = calc_fitness_scores(players)
     # for player in players: play_game(player) 
-    scores = calc_fitness_scores(players)
     pop = [(p,s) for p,s in sorted(zip(players,scores), key=lambda x: x[1], reverse=True)]     # create list of tuples containing AI_Player and its associated score, sorted by score
     best_score = pop[0][1]      
     
@@ -231,4 +230,4 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, N=2):
 
 
     
-ga(20, mut_rate=0.3, max_iters=100)
+ga(2, mut_rate=0.3, max_iters=100)
