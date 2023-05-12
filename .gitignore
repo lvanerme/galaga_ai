@@ -1,5 +1,5 @@
 # vs code stuff
-.vscode
+*.json
 # Byte-compiled / optimized / DLL files
 __pycache__/
 **/__pycache__/
