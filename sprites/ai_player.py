@@ -9,14 +9,16 @@ from sprites.player import Player
 
 
 class AI_Player(Player):
-    def __init__(self, input_hidden_ws: list, hidden_bs: list, hidden_output_ws: list, output_bs: list):
+    def __init__(self, input_hidden_ws: list, hidden_bs: list, hidden_ws2: list, hidden_bs2: list, hidden_output_ws: list, output_bs: list):
         # NOTE: keep track of lengths here
         # super().__init__(sprites)
         self.input_hidden_ws = input_hidden_ws
         self.hidden_bs = hidden_bs
+        self.hidden_ws2 = hidden_ws2
+        self.hidden_bs2 = hidden_bs2
         self.hidden_output_ws = hidden_output_ws
         self.output_bs = output_bs
-        self.model = self.configure_model(input_hidden_ws, hidden_bs, hidden_output_ws, output_bs)
+        self.model = self.configure_model(input_hidden_ws, hidden_bs, hidden_ws2, hidden_bs2, hidden_output_ws, output_bs)
         self.updates_survived = 0
         self.player_num = 0
     
@@ -53,18 +55,21 @@ class AI_Player(Player):
         return move == 3        # Shoot rocket else stay still
 
 
-    def configure_model(self, input_hidden_ws, hidden_bs, hidden_output_ws, output_bs):
+    def configure_model(self, input_hidden_ws, hidden_bs, hidden_ws2, hidden_bs2, hidden_output_ws, output_bs):
         model = Sequential()
         model.add(Input((14, )))
         model.add(Dense(units=8, activation = 'sigmoid'))
+        model.add(Dense(units=6, activation = 'sigmoid'))
         model.add(Dense(units=4, activation = 'relu'))
         
-        hidden_weights = [np.array(input_hidden_ws).reshape(14, 8), np.array(hidden_bs)]
-        output_weights = [np.array(hidden_output_ws).reshape(8, 4), np.array(output_bs)]
+        hidden_weights = [np.array(input_hidden_ws).reshape(14,8), np.array(hidden_bs)]
+        hidden_weights2 = [np.array(hidden_ws2).reshape(8,6), np.array(hidden_bs2)]
+        output_weights = [np.array(hidden_output_ws).reshape(6,4), np.array(output_bs)]
         # hidden_weights = np.array([input_hidden_ws, hidden_bs]).reshape(12, 8)
         # output_weights = np.array([hidden_output_ws, output_bs]).reshape(8, 4)
         model.layers[0].set_weights(hidden_weights)
-        model.layers[1].set_weights(output_weights)
+        model.layers[1].set_weights(hidden_weights2)
+        model.layers[2].set_weights(output_weights)
 
         model.compile(loss = 'categorical_crossentropy', optimizer = 'adam')
         return model
