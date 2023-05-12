@@ -272,9 +272,10 @@ class Gameplay(BaseState):
     def draw_score(self, screen):
         score_y = 10
         for num, player in enumerate(self.players):
-            score = self.font.render(f"Player {num+1} score: {player.score}", True, (255, 255, 255))
+            font = pygame.font.Font(None, 15)
+            score = font.render(f"Player {num+1} score: {player.score}", True, (255, 255, 255))
             screen.blit(score, (10, score_y))
-            score_y += 20
+            score_y += 15
 
 
         # score = self.font.render('SCORE', True, (255, 20, 20))
