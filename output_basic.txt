@@ -1,6 +1,2 @@
 num_iters = 0
-	gen_avg = 1075.20	consensus rate = 0.08	best_score = 3360	max_time = 787
-num_iters = 1
-	gen_avg = 1152.00	consensus rate = 0.04	best_score = 3960	max_time = 1299
-num_iters = 2
-	gen_avg = 1041.60	consensus rate = 0.04	best_score = 4200	max_time = 1299
+	best fitness score = 0.7415308641975308	gen_avg = 1.973729821555834e-18	consensus rate = 0.0044444444444444444	max_score = 3720	max_time = 2690
