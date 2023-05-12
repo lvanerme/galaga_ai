@@ -40,7 +40,8 @@ class AI_Player(Player):
 
         data_array = np.array([player_x, player_y, e1_x, e1_y, e2_x, e2_y, r1_x, r1_y, r2_x, r2_y, r3_x, r3_y, dist_to_left, dist_to_right], dtype='int64')
         data_array = data_array.reshape(1,-1)
-        results = self.model.predict(data_array, verbose=0)
+        results = self.model(data_array, training=False)
+        # results = self.model.predict(data_array, verbose=0)
         move = np.argmax(results)
 
         if move == 0: self.rect.move_ip(-5, 0)       # Left
