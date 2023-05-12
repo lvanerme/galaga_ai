@@ -249,7 +249,7 @@ class Gameplay(BaseState):
             if not player.freeze:
                 result = pygame.sprite.spritecollideany(player, player.targeted_rockets)
                 if result:
-                    self.all_sprites.add(Explosion(self.explosion_sprites, result.rect[0], result.rect[1]))
+                    # self.all_sprites.add(Explosion(self.explosion_sprites, result.rect[0], result.rect[1]))
                     player.freeze = True
                     player.kill()
 
