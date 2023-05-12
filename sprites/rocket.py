@@ -4,7 +4,7 @@ import constants
 
 
 class Rocket(pygame.sprite.Sprite):
-    def __init__(self, sprites, xSpeed, ySpeed):
+    def __init__(self, sprites, xSpeed, ySpeed, player_num):
         super(Rocket, self).__init__()
         self.timer = 0
         self.interval = 2
@@ -12,6 +12,8 @@ class Rocket(pygame.sprite.Sprite):
         self.ySpeed = ySpeed
         self.xSpeed = xSpeed
         self.images = sprites.load_strip([0, 177, 12, 14], self.number_of_images, -1)
+
+        self.player_num = player_num
 
         self.surf = self.images[1]
         self.rect = self.surf.get_rect(
