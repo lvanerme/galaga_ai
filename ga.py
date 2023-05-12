@@ -6,7 +6,7 @@ import struct
 import numpy as np
 from main import play_game
 from sys import maxsize
-from random import random, randrange, randint, uniform, choices
+from random import random, randrange, randint, uniform, choice, choices
 from tensorflow import random_normal_initializer, Variable
 from sprites.ai_player import AI_Player
 from copy import deepcopy
@@ -166,8 +166,8 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, N=2):
     num_iters = 0
     out_file = open("output_basic.txt", "w")
     while num_iters < max_iters:
-        # new_players, new_len = [pop[i][0] for i in range(5)], 5         # grab 5 best from previous gen and automatically add them to new_pop
         new_players, new_len = [], 0
+        # new_players, new_len = [pop[i][0] for i in range(5)], 5         # grab 5 best from previous gen and automatically add them to new_pop
         for player in new_players: 
             if random() <= mut_rate: player = mutation(player)
         
@@ -187,11 +187,9 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, N=2):
             
             c = AI_Player(new_c.input_hidden_ws, new_c.hidden_bs, new_c.hidden_output_ws, new_c.output_bs)
             del new_c
-            if random() <= mut_rate: c = mutation(c)
             
-            # No crossover?
-            # if random() <= cross_rate: new_c = crossover(c1, c2)
-            # else: new_c = c1 if c1.score >= c2.score else c2 
+            if random() <= cross_rate: c = crossover(c, choice(pop))
+            if random() <= mut_rate: c = mutation(c)
             
             new_players.append(c)
             new_len += 1
@@ -230,4 +228,4 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, N=2):
 
 
     
-ga(2, mut_rate=0.3, max_iters=100)
+ga(10, mut_rate=0.9, cross_rate=0.3, max_iters=100)
