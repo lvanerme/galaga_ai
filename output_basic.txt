@@ -1,8 +1,5 @@
 num_iters = 0
-	best fitness score = 0.5915	gen_avg = 6.938893903907228e-18	consensus rate = 0.25	max_score = 3000	max_time = 392
+	best fitness score = 0.6154017857142857	gen_avg = 2.7755575615628914e-17	consensus rate = 0.25	max_score = 2400	max_time = 250
 num_iters = 1
-	best fitness score = 0.7307692307692308	gen_avg = 1.3877787807814457e-17	consensus rate = 0.25	max_score = 1560	max_time = 392
-num_iters = 2
-	best fitness score = 0.7307692307692308	gen_avg = 2.7755575615628914e-17	consensus rate = 0.25	max_score = 1920	max_time = 392
-num_iters = 3
-	best fitness score = 0.7307692307692308	gen_avg = -3.469446951953614e-18	consensus rate = 0.25	max_score = 1200	max_time = 392
+	best fitness score = 0.6154017857142857	gen_avg = 0.0	consensus rate = 0.25	max_score = 480	max_time = 250
+start = 1683916155.170476	 time elapsed = -38.559906005859375

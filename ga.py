@@ -153,8 +153,8 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, N=2):
     start = time.time()
     players = gen_seed(net_units, pop_size)
     #Grab subset of population to make game run faster
-    for i in range(0, pop_size-1, 2):
-        sub_players = [players[i], players[i+1]]
+    for i in range(0, pop_size-1, 4):
+        sub_players = [players[i], players[i+1], players[i+2], players[i+3]]
         play_game(sub_players)
 
     scores, max_score, max_time = calc_fitness_scores(players)
@@ -200,8 +200,8 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, N=2):
         del pop
 
         # pop = new_pop
-        for i in range(0, pop_size-1, 2):
-            sub_players = [new_players[i], new_players[i+1]]
+        for i in range(0, pop_size-1, 4):
+            sub_players = [new_players[i], new_players[i+1], new_players[i+2], new_players[i+3]]
             play_game(sub_players)
 
         scores, new_max_score, new_max_time = calc_fitness_scores(new_players)
@@ -227,9 +227,9 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, N=2):
         num_iters += 1
 
     end = time.time()
-    out_file.write(f'{start = }\t{end = }\n')
+    out_file.write(f'{start = }\t time elapsed = {start - end }\n')
     out_file.close()
 
 
     
-ga(20, mut_rate=0.3, max_iters=100)
+ga(4, mut_rate=0.3, max_iters=2)

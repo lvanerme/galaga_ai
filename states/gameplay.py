@@ -2,7 +2,6 @@ import pygame
 import random
 import spritesheet
 import constants
-from starfield import StarField
 
 from .base_state import BaseState
 from sprites.ai_player import AI_Player
@@ -32,7 +31,6 @@ class Gameplay(BaseState):
         self.next_state = "GAME_OVER"
         self.sprites = spritesheet.SpriteSheet(constants.SPRITE_SHEET)
         self.explosion_sprites = spritesheet.SpriteSheet(constants.SPRITE_SHEET_EXPLOSION)
-        self.starfield = StarField()
         self.control_points1 = ControlPointCollectionFactory.create_collection1()
         self.control_points2 = ControlPointCollectionFactory.create_collection2()
         self.control_points3 = ControlPointCollectionFactory.create_collection3()
@@ -190,8 +188,6 @@ class Gameplay(BaseState):
                         player.targeted_rockets.add(rocket)
 
     def draw(self, screen):
-        self.starfield.render(screen)
-        # pressed_keys = pygame.key.get_pressed()
         for entity in self.all_sprites:
             if type(entity) == AI_Player: continue
             entity.update(None)

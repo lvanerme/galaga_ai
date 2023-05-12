@@ -14,7 +14,7 @@ def play_game(players=None):
     pygame.init()
     # pygame.mixer.init()
     screen = pygame.display.set_mode((constants.SCREEN_WIDTH,
-                                    constants.SCREEN_HEIGHT), flags=pygame.HIDDEN)
+                                    constants.SCREEN_HEIGHT))
     states = {
         # "MENU": Menu(),
         "SPLASH": Splash(),
