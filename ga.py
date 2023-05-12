@@ -233,4 +233,4 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, N=2):
 
 
     
-ga(100, mut_rate=0.3, cross_rate=0.3, max_iters=100)
+ga(225, mut_rate=0.3, cross_rate=0.3, max_iters=100)
