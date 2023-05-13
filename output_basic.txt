@@ -1,2 +1,0 @@
-num_iters = 0
-	gen_avg = 563.43	consensus rate = 0.009523809523809525	best_score = 2040	max_time = 394
