@@ -218,6 +218,10 @@ class Gameplay(BaseState):
 
         # Get info and pass it to AI
         for player in self.players:
+            if player.kill_countdown <= 0:
+                player.freeze = True
+                player.kill()
+    
             if not player.freeze:
                 player_x, player_y = self.get_player_info(player)
                 enemy1_coords, enemy2_coords = self.get_closest_enemies(player_x, player_y)
@@ -226,16 +230,20 @@ class Gameplay(BaseState):
                 shoot = player.update(player_x, player_y, enemy1_coords, enemy2_coords, rocket1_coords, rocket2_coords, rocket3_coords, dist_to_left, dist_to_right)
                 if shoot and len(player.rockets) < 2: self.shoot_rocket(player)
 
+        print(self.players[0].kill_countdown)       
+
         for player in self.players:
             if not player.freeze:
                 result = pygame.sprite.groupcollide(player.rockets, player.available_enemies, True, False)
                 if result:
+                    player.kill_countdown += 100
                     for key in result:
                         cur_enemy = result[key][0]
                         player.score += 120
                         cur_enemy.remove(player.available_enemies)
                         cur_enemy.times_hit += 1
                         if cur_enemy.times_hit == len(self.players): cur_enemy.kill()
+
                         # if self.player.score > self.high_score:
                         #     self.high_score = self.player.score
                         

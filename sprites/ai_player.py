@@ -21,6 +21,7 @@ class AI_Player(Player):
         self.model = self.configure_model(input_hidden_ws, hidden_bs, hidden_ws2, hidden_bs2, hidden_output_ws, output_bs)
         self.updates_survived = 0
         self.player_num = 0
+        self.kill_countdown = 600
     
     
     def start(self, sprites):
@@ -32,8 +33,9 @@ class AI_Player(Player):
     
     
     def update(self, player_x, player_y, enemy1_coords, enemy2_coords, rocket1_coords, rocket2_coords, rocket3_coords, dist_to_left, dist_to_right):
-        self.updates_survived += 1          # TODO: timeout at certain point...
-        
+        self.updates_survived += 1
+        self.kill_countdown -= 1
+
         e1_x, e1_y = enemy1_coords
         e2_x, e2_y = enemy2_coords
         r1_x, r1_y = rocket1_coords
