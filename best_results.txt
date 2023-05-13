@@ -1,106 +1,201 @@
 num_iters = 0
-	best fitness score = 0.705808095952024	gen_avg = -3.7192471324942746e-17	consensus rate = 0.02	max_score = 2520	max_time = 399
+	gen_avg = 1090.67	consensus rate = 0.011111111111111112	best_score = 5280	max_time = 2466
 num_iters = 1
-	best fitness score = 0.705808095952024	gen_avg = -2.6645352591003756e-17	consensus rate = 0.02	max_score = 2640	max_time = 511
+	gen_avg = 1453.33	consensus rate = 0.011111111111111112	best_score = 5640	max_time = 2466
 num_iters = 2
-	best fitness score = 0.715188188812643	gen_avg = -2.6645352591003756e-17	consensus rate = 0.02	max_score = 3000	max_time = 511
+	gen_avg = 1322.67	consensus rate = 0.011111111111111112	best_score = 5280	max_time = 2466
 num_iters = 3
-	best fitness score = 0.715188188812643	gen_avg = -6.661338147750939e-18	consensus rate = 0.02	max_score = 3120	max_time = 511
+	gen_avg = 1021.33	consensus rate = 0.011111111111111112	best_score = 4920	max_time = 2466
 num_iters = 4
-	best fitness score = 0.8645115528372409	gen_avg = -6.661338147750939e-18	consensus rate = 0.02	max_score = 3720	max_time = 537
+	gen_avg = 1417.33	consensus rate = 0.011111111111111112	best_score = 6600	max_time = 2720
 num_iters = 5
-	best fitness score = 0.872422619047619	gen_avg = 5.551115123125783e-19	consensus rate = 0.02	max_score = 5280	max_time = 661
+	gen_avg = 1213.33	consensus rate = 0.011111111111111112	best_score = 7560	max_time = 3638
 num_iters = 6
-	best fitness score = 0.8886310628147363	gen_avg = 9.870576578308033e-18	consensus rate = 0.02	max_score = 5520	max_time = 798
+	gen_avg = 1193.33	consensus rate = 0.011111111111111112	best_score = 3360	max_time = 3638
 num_iters = 7
-	best fitness score = 0.8886310628147363	gen_avg = 1.2212453270876722e-17	consensus rate = 0.02	max_score = 2280	max_time = 798
+	gen_avg = 1021.33	consensus rate = 0.011111111111111112	best_score = 4560	max_time = 3638
 num_iters = 8
-	best fitness score = 0.8886310628147363	gen_avg = 1.3461454173580023e-17	consensus rate = 0.02	max_score = 2280	max_time = 798
+	gen_avg = 1436.00	consensus rate = 0.011111111111111112	best_score = 6720	max_time = 3638
 num_iters = 9
-	best fitness score = 0.8886310628147363	gen_avg = -1.8873791418627663e-17	consensus rate = 0.02	max_score = 2880	max_time = 798
+	gen_avg = 1397.33	consensus rate = 0.011111111111111112	best_score = 6960	max_time = 3638
 num_iters = 10
-	best fitness score = 0.8886310628147363	gen_avg = 2.1094237467877975e-17	consensus rate = 0.02	max_score = 3000	max_time = 798
+	gen_avg = 1173.33	consensus rate = 0.011111111111111112	best_score = 5760	max_time = 3638
 num_iters = 11
-	best fitness score = 0.8886310628147363	gen_avg = -4.996003610813204e-18	consensus rate = 0.02	max_score = 3360	max_time = 798
+	gen_avg = 1164.00	consensus rate = 0.011111111111111112	best_score = 4200	max_time = 3638
 num_iters = 12
-	best fitness score = 0.8886310628147363	gen_avg = -2.3869795029440865e-17	consensus rate = 0.02	max_score = 3240	max_time = 798
+	gen_avg = 1105.33	consensus rate = 0.011111111111111112	best_score = 7200	max_time = 4255
 num_iters = 13
-	best fitness score = 0.8886310628147363	gen_avg = 9.436895709313831e-18	consensus rate = 0.02	max_score = 3120	max_time = 798
+	gen_avg = 1240.00	consensus rate = 0.011111111111111112	best_score = 8040	max_time = 4326
 num_iters = 14
-	best fitness score = 0.8886310628147363	gen_avg = -2.2898349882893852e-17	consensus rate = 0.02	max_score = 2880	max_time = 798
+	gen_avg = 1316.00	consensus rate = 0.011111111111111112	best_score = 5880	max_time = 4326
 num_iters = 15
-	best fitness score = 0.8886310628147363	gen_avg = 1.609823385706477e-17	consensus rate = 0.02	max_score = 3240	max_time = 798
+	gen_avg = 1289.33	consensus rate = 0.011111111111111112	best_score = 5400	max_time = 4326
 num_iters = 16
-	best fitness score = 0.8886310628147363	gen_avg = -3.3306690738754695e-18	consensus rate = 0.02	max_score = 2520	max_time = 798
+	gen_avg = 1212.00	consensus rate = 0.011111111111111112	best_score = 4320	max_time = 4326
 num_iters = 17
-	best fitness score = 0.8886310628147363	gen_avg = -3.608224830031759e-17	consensus rate = 0.02	max_score = 1800	max_time = 798
+	gen_avg = 1066.67	consensus rate = 0.011111111111111112	best_score = 2160	max_time = 4326
 num_iters = 18
-	best fitness score = 0.8886310628147363	gen_avg = -8.049116928532384e-18	consensus rate = 0.02	max_score = 240	max_time = 798
+	gen_avg = 1194.67	consensus rate = 0.011111111111111112	best_score = 5640	max_time = 4326
 num_iters = 19
-	best fitness score = 0.8886310628147363	gen_avg = -2.997602166487923e-17	consensus rate = 0.02	max_score = 480	max_time = 798
+	gen_avg = 1173.33	consensus rate = 0.011111111111111112	best_score = 5400	max_time = 4326
 num_iters = 20
-	best fitness score = 0.8886310628147363	gen_avg = -3.608224830031759e-18	consensus rate = 0.02	max_score = 840	max_time = 798
+	gen_avg = 1312.00	consensus rate = 0.011111111111111112	best_score = 4320	max_time = 4326
 num_iters = 21
-	best fitness score = 0.8886310628147363	gen_avg = 0.0	consensus rate = 0.02	max_score = 480	max_time = 798
+	gen_avg = 1016.00	consensus rate = 0.011111111111111112	best_score = 4680	max_time = 4326
 num_iters = 22
-	best fitness score = 0.8886310628147363	gen_avg = 1.249000902703301e-18	consensus rate = 0.02	max_score = 1680	max_time = 798
+	gen_avg = 1225.33	consensus rate = 0.011111111111111112	best_score = 4320	max_time = 4326
 num_iters = 23
-	best fitness score = 0.8886310628147363	gen_avg = 2.4147350785597155e-17	consensus rate = 0.02	max_score = 1320	max_time = 798
+	gen_avg = 1317.33	consensus rate = 0.011111111111111112	best_score = 5280	max_time = 4326
 num_iters = 24
-	best fitness score = 0.8886310628147363	gen_avg = -4.440892098500626e-18	consensus rate = 0.02	max_score = 2400	max_time = 798
+	gen_avg = 1200.00	consensus rate = 0.011111111111111112	best_score = 5640	max_time = 4326
 num_iters = 25
-	best fitness score = 0.8886310628147363	gen_avg = 3.469446951953614e-18	consensus rate = 0.02	max_score = 2160	max_time = 798
+	gen_avg = 526.67	consensus rate = 0.011111111111111112	best_score = 6240	max_time = 4326
 num_iters = 26
-	best fitness score = 0.8886310628147363	gen_avg = -1.2628786905111156e-17	consensus rate = 0.02	max_score = 1800	max_time = 798
+	gen_avg = 928.00	consensus rate = 0.011111111111111112	best_score = 3480	max_time = 4326
 num_iters = 27
-	best fitness score = 0.8886310628147363	gen_avg = -1.0269562977782698e-17	consensus rate = 0.02	max_score = 960	max_time = 798
+	gen_avg = 1282.67	consensus rate = 0.011111111111111112	best_score = 8880	max_time = 4326
 num_iters = 28
-	best fitness score = 0.8886310628147363	gen_avg = -1.1102230246251566e-18	consensus rate = 0.02	max_score = 1920	max_time = 798
+	gen_avg = 1269.33	consensus rate = 0.011111111111111112	best_score = 5640	max_time = 4326
 num_iters = 29
-	best fitness score = 0.8886310628147363	gen_avg = 6.245004513516506e-18	consensus rate = 0.02	max_score = 2280	max_time = 798
+	gen_avg = 1110.67	consensus rate = 0.011111111111111112	best_score = 5040	max_time = 4326
 num_iters = 30
-	best fitness score = 0.8886310628147363	gen_avg = 2.7755575615628915e-18	consensus rate = 0.02	max_score = 1200	max_time = 798
+	gen_avg = 1333.33	consensus rate = 0.011111111111111112	best_score = 5640	max_time = 4326
 num_iters = 31
-	best fitness score = 0.8886310628147363	gen_avg = -1.1934897514720433e-17	consensus rate = 0.02	max_score = 2400	max_time = 798
+	gen_avg = 1252.00	consensus rate = 0.011111111111111112	best_score = 5520	max_time = 4326
 num_iters = 32
-	best fitness score = 0.8886310628147363	gen_avg = -2.3314683517128286e-17	consensus rate = 0.02	max_score = 1560	max_time = 798
+	gen_avg = 1118.67	consensus rate = 0.011111111111111112	best_score = 5040	max_time = 4326
 num_iters = 33
-	best fitness score = 0.8886310628147363	gen_avg = 4.718447854656916e-18	consensus rate = 0.02	max_score = 1560	max_time = 798
+	gen_avg = 1285.33	consensus rate = 0.011111111111111112	best_score = 4920	max_time = 4326
 num_iters = 34
-	best fitness score = 0.8886310628147363	gen_avg = -3.3306690738754695e-18	consensus rate = 0.02	max_score = 1560	max_time = 798
+	gen_avg = 1124.00	consensus rate = 0.011111111111111112	best_score = 3480	max_time = 4326
 num_iters = 35
-	best fitness score = 0.8886310628147363	gen_avg = 1.0547118733938987e-17	consensus rate = 0.02	max_score = 960	max_time = 798
+	gen_avg = 1229.33	consensus rate = 0.011111111111111112	best_score = 10200	max_time = 5554
 num_iters = 36
-	best fitness score = 0.8886310628147363	gen_avg = 1.9012569296705807e-17	consensus rate = 0.02	max_score = 720	max_time = 798
+	gen_avg = 1324.00	consensus rate = 0.011111111111111112	best_score = 5280	max_time = 5554
 num_iters = 37
-	best fitness score = 0.8886310628147363	gen_avg = 1.915134717478395e-17	consensus rate = 0.02	max_score = 1440	max_time = 798
+	gen_avg = 1326.67	consensus rate = 0.011111111111111112	best_score = 5760	max_time = 5554
 num_iters = 38
-	best fitness score = 0.8886310628147363	gen_avg = -1.6653345369377347e-18	consensus rate = 0.02	max_score = 960	max_time = 798
+	gen_avg = 1214.67	consensus rate = 0.011111111111111112	best_score = 5520	max_time = 5554
 num_iters = 39
-	best fitness score = 0.8886310628147363	gen_avg = 1.0408340855860843e-17	consensus rate = 0.02	max_score = 960	max_time = 798
+	gen_avg = 1242.67	consensus rate = 0.011111111111111112	best_score = 5880	max_time = 5554
 num_iters = 40
-	best fitness score = 0.8886310628147363	gen_avg = -1.2212453270876722e-17	consensus rate = 0.02	max_score = 240	max_time = 798
+	gen_avg = 1341.33	consensus rate = 0.011111111111111112	best_score = 5400	max_time = 5554
 num_iters = 41
-	best fitness score = 0.8886310628147363	gen_avg = 4.440892098500626e-18	consensus rate = 0.02	max_score = 360	max_time = 798
+	gen_avg = 1305.33	consensus rate = 0.011111111111111112	best_score = 5640	max_time = 5554
 num_iters = 42
-	best fitness score = 0.8886310628147363	gen_avg = -1.6514567491299203e-17	consensus rate = 0.02	max_score = 720	max_time = 798
+	gen_avg = 1190.67	consensus rate = 0.011111111111111112	best_score = 7800	max_time = 5554
 num_iters = 43
-	best fitness score = 0.8886310628147363	gen_avg = 3.2751579226442116e-17	consensus rate = 0.02	max_score = 240	max_time = 798
+	gen_avg = 1224.00	consensus rate = 0.011111111111111112	best_score = 5040	max_time = 5554
 num_iters = 44
-	best fitness score = 0.8886310628147363	gen_avg = 2.55351295663786e-17	consensus rate = 0.02	max_score = 1200	max_time = 798
+	gen_avg = 1325.33	consensus rate = 0.011111111111111112	best_score = 4680	max_time = 5554
 num_iters = 45
-	best fitness score = 0.8886310628147363	gen_avg = 1.817990202823694e-17	consensus rate = 0.02	max_score = 1920	max_time = 798
+	gen_avg = 1350.67	consensus rate = 0.011111111111111112	best_score = 4800	max_time = 5554
 num_iters = 46
-	best fitness score = 0.8886310628147363	gen_avg = -2.5777990853015352e-17	consensus rate = 0.02	max_score = 840	max_time = 798
+	gen_avg = 1145.33	consensus rate = 0.011111111111111112	best_score = 5640	max_time = 5554
 num_iters = 47
-	best fitness score = 0.8886310628147363	gen_avg = -3.344546861683284e-17	consensus rate = 0.02	max_score = 720	max_time = 798
+	gen_avg = 1133.33	consensus rate = 0.011111111111111112	best_score = 9360	max_time = 5554
 num_iters = 48
-	best fitness score = 0.8886310628147363	gen_avg = -7.771561172376097e-18	consensus rate = 0.02	max_score = 720	max_time = 798
+	gen_avg = 1125.33	consensus rate = 0.011111111111111112	best_score = 4200	max_time = 5554
 num_iters = 49
-	best fitness score = 0.8886310628147363	gen_avg = 1.6653345369377347e-18	consensus rate = 0.02	max_score = 1560	max_time = 798
+	gen_avg = 1092.00	consensus rate = 0.011111111111111112	best_score = 3960	max_time = 5554
 num_iters = 50
-	best fitness score = 0.8886310628147363	gen_avg = 1.817990202823694e-17	consensus rate = 0.02	max_score = 1680	max_time = 798
+	gen_avg = 1132.00	consensus rate = 0.011111111111111112	best_score = 3240	max_time = 5554
 num_iters = 51
-	best fitness score = 0.8886310628147363	gen_avg = 1.27675647831893e-17	consensus rate = 0.02	max_score = 840	max_time = 798
+	gen_avg = 429.33	consensus rate = 0.011111111111111112	best_score = 3240	max_time = 5554
 num_iters = 52
-	best fitness score = 0.8886310628147363	gen_avg = 1.249000902703301e-18	consensus rate = 0.02	max_score = 1080	max_time = 798
+	gen_avg = 949.33	consensus rate = 0.011111111111111112	best_score = 3480	max_time = 5554
+num_iters = 53
+	gen_avg = 1246.67	consensus rate = 0.011111111111111112	best_score = 8520	max_time = 5554
+num_iters = 54
+	gen_avg = 1377.33	consensus rate = 0.011111111111111112	best_score = 5160	max_time = 5554
+num_iters = 55
+	gen_avg = 1201.33	consensus rate = 0.011111111111111112	best_score = 5400	max_time = 5554
+num_iters = 56
+	gen_avg = 1276.00	consensus rate = 0.011111111111111112	best_score = 9000	max_time = 5554
+num_iters = 57
+	gen_avg = 1117.33	consensus rate = 0.011111111111111112	best_score = 5640	max_time = 5554
+num_iters = 58
+	gen_avg = 1190.67	consensus rate = 0.011111111111111112	best_score = 4560	max_time = 5554
+num_iters = 59
+	gen_avg = 1214.67	consensus rate = 0.011111111111111112	best_score = 4920	max_time = 5554
+num_iters = 60
+	gen_avg = 1194.67	consensus rate = 0.011111111111111112	best_score = 3240	max_time = 5554
+num_iters = 61
+	gen_avg = 1180.00	consensus rate = 0.011111111111111112	best_score = 5520	max_time = 5554
+num_iters = 62
+	gen_avg = 1301.33	consensus rate = 0.011111111111111112	best_score = 5640	max_time = 5554
+num_iters = 63
+	gen_avg = 540.00	consensus rate = 0.011111111111111112	best_score = 3720	max_time = 5554
+num_iters = 64
+	gen_avg = 172.00	consensus rate = 0.011111111111111112	best_score = 1680	max_time = 5554
+num_iters = 65
+	gen_avg = 185.33	consensus rate = 0.011111111111111112	best_score = 2160	max_time = 5554
+num_iters = 66
+	gen_avg = 241.33	consensus rate = 0.011111111111111112	best_score = 1560	max_time = 5554
+num_iters = 67
+	gen_avg = 158.67	consensus rate = 0.011111111111111112	best_score = 1800	max_time = 5554
+num_iters = 68
+	gen_avg = 261.33	consensus rate = 0.011111111111111112	best_score = 2760	max_time = 5554
+num_iters = 69
+	gen_avg = 190.67	consensus rate = 0.011111111111111112	best_score = 1920	max_time = 5554
+num_iters = 70
+	gen_avg = 189.33	consensus rate = 0.011111111111111112	best_score = 3360	max_time = 5554
+num_iters = 71
+	gen_avg = 424.00	consensus rate = 0.011111111111111112	best_score = 1680	max_time = 5554
+num_iters = 72
+	gen_avg = 401.33	consensus rate = 0.011111111111111112	best_score = 2520	max_time = 5554
+num_iters = 73
+	gen_avg = 1074.67	consensus rate = 0.011111111111111112	best_score = 5760	max_time = 5554
+num_iters = 74
+	gen_avg = 365.33	consensus rate = 0.011111111111111112	best_score = 6240	max_time = 5554
+num_iters = 75
+	gen_avg = 40.00	consensus rate = 0.011111111111111112	best_score = 840	max_time = 5554
+num_iters = 76
+	gen_avg = 50.67	consensus rate = 0.011111111111111112	best_score = 1080	max_time = 5554
+num_iters = 77
+	gen_avg = 52.00	consensus rate = 0.011111111111111112	best_score = 1080	max_time = 5554
+num_iters = 78
+	gen_avg = 1022.67	consensus rate = 0.011111111111111112	best_score = 7080	max_time = 5554
+num_iters = 79
+	gen_avg = 308.00	consensus rate = 0.011111111111111112	best_score = 4080	max_time = 5554
+num_iters = 80
+	gen_avg = 154.67	consensus rate = 0.011111111111111112	best_score = 3240	max_time = 5554
+num_iters = 81
+	gen_avg = 28.00	consensus rate = 0.011111111111111112	best_score = 960	max_time = 5554
+num_iters = 82
+	gen_avg = 44.00	consensus rate = 0.011111111111111112	best_score = 1080	max_time = 5554
+num_iters = 83
+	gen_avg = 54.67	consensus rate = 0.011111111111111112	best_score = 1560	max_time = 5554
+num_iters = 84
+	gen_avg = 709.33	consensus rate = 0.011111111111111112	best_score = 3120	max_time = 5554
+num_iters = 85
+	gen_avg = 1069.33	consensus rate = 0.011111111111111112	best_score = 3360	max_time = 5554
+num_iters = 86
+	gen_avg = 1234.67	consensus rate = 0.011111111111111112	best_score = 6360	max_time = 5554
+num_iters = 87
+	gen_avg = 1369.33	consensus rate = 0.011111111111111112	best_score = 4440	max_time = 5554
+num_iters = 88
+	gen_avg = 1192.00	consensus rate = 0.011111111111111112	best_score = 5400	max_time = 5554
+num_iters = 89
+	gen_avg = 1538.67	consensus rate = 0.011111111111111112	best_score = 8400	max_time = 5554
+num_iters = 90
+	gen_avg = 1206.67	consensus rate = 0.011111111111111112	best_score = 5760	max_time = 5554
+num_iters = 91
+	gen_avg = 380.00	consensus rate = 0.011111111111111112	best_score = 3600	max_time = 5554
+num_iters = 92
+	gen_avg = 960.00	consensus rate = 0.011111111111111112	best_score = 5520	max_time = 5554
+num_iters = 93
+	gen_avg = 1086.67	consensus rate = 0.011111111111111112	best_score = 5520	max_time = 5554
+num_iters = 94
+	gen_avg = 1230.67	consensus rate = 0.011111111111111112	best_score = 7200	max_time = 5554
+num_iters = 95
+	gen_avg = 1320.00	consensus rate = 0.011111111111111112	best_score = 5640	max_time = 5554
+num_iters = 96
+	gen_avg = 1254.67	consensus rate = 0.011111111111111112	best_score = 4560	max_time = 5554
+num_iters = 97
+	gen_avg = 1382.67	consensus rate = 0.011111111111111112	best_score = 4200	max_time = 5554
+num_iters = 98
+	gen_avg = 1278.67	consensus rate = 0.011111111111111112	best_score = 3600	max_time = 5554
+num_iters = 99
+	gen_avg = 270.67	consensus rate = 0.011111111111111112	best_score = 3120	max_time = 5554
+start = 1683950590.942306	end = 1683965947.677726
