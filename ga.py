@@ -135,10 +135,9 @@ def calc_fitness_scores(players: list):
 
 def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, net_units2=6, N=2):
     start = time.time()
-    players = gen_seed(net_units, net_units2, pop_size)   # gen start pop 
-     
-    # Grab subset of population to make game run faster
-    NUM_PLAYERS = 50
+    players = gen_seed(net_units, net_units2, pop_size)
+    #Grab subset of population to make game run faster
+    NUM_PLAYERS = 10
     for i in range(0, pop_size-1, NUM_PLAYERS):
         sub_players = players[i:i+NUM_PLAYERS]
         play_game(sub_players)
@@ -206,7 +205,7 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, net_u
             
         percent_max = count / pop_size
   
-        # print(f"{num_iters = }\n\tgen_avg = {'{:.2f}'.format(mean_score)}\tconsensus rate = {percent_max}\t{best_score = }\t{max_time = }\n")
+        print(f"{num_iters = }\n\tgen_avg = {'{:.2f}'.format(mean_score)}\tconsensus rate = {percent_max}\t{best_score = }\t{max_time = }\n")
 
         out_file.write(f"{num_iters = }\n\tgen_avg = {'{:.2f}'.format(mean_score)}\tconsensus rate = {percent_max}\t{best_score = }\t{max_time = }\n")
         num_iters += 1
@@ -224,4 +223,4 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, net_u
     out_player.close()
 
     
-ga(100, mut_rate=0.3, cross_rate=0.3, max_iters=250) 
+ga(105, mut_rate=0.3, cross_rate=0.6, max_iters=100, N = 10)
