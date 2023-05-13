@@ -5,7 +5,9 @@ import tensorflow as tf
 from keras import Input
 from keras import Sequential
 from keras.layers import Dense
+from re import split as resplit
 from sprites.player import Player
+from main import play_game
 
 
 class AI_Player(Player):
@@ -73,3 +75,17 @@ class AI_Player(Player):
 
         model.compile(loss = 'categorical_crossentropy', optimizer = 'adam')
         return model
+    
+    
+    def test_model(self, filename: str):
+        data, players = open(filename, 'r').read().splitlines(), []
+        for i in range(0, len(data), 6):    # currently 6 sets of weights in NN
+            all_weights = []
+            for j in range(j, j+6):
+                weights_str, weights_float = resplit('\[|\]', data[i])[1].split(','), []
+                for w in weights_str: weights_float.append(float(w))
+                all_weights.append(weights_float)
+            input_hidden_ws, hidden_bs, hidden_ws2, hidden_bs2, hidden_output_ws, output_bs = all_weights
+            players.append(AI_Player(input_hidden_ws, hidden_bs, hidden_ws2, hidden_bs2, hidden_output_ws, output_bs))
+        
+        for player in players: play_game([player], show=True)   # play each player individually...TODO: show generation of individual?
