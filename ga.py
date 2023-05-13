@@ -130,7 +130,7 @@ def calc_fitness_scores(players: list):
         else: time = (p.updates_survived - mean_time) / (max_time - min_time)   # normalize times
         fitness_scores.append((score + time) / 2)   # score is evenly weighted between scores and time
         
-    return fitness_scores, max_score, max_time, mean_score, mean_time, max_score_idx, max_time_idx
+    return fitness_scores, max_score, max_time, max_score_idx, max_time_idx
         
 
 def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, net_units2=6, N=2):
@@ -142,7 +142,7 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, net_u
         sub_players = players[i:i+NUM_PLAYERS]
         play_game(sub_players)
 
-    scores, best_score, max_time, mean_score, mean_time, max_score_idx, max_time_idx = calc_fitness_scores(players)
+    scores, best_score, max_time, max_score_idx, max_time_idx = calc_fitness_scores(players)
     pop = [(p,s) for p,s in sorted(zip(players,scores), key=lambda x: x[1], reverse=True)]     # create list of tuples containing AI_Player and its associated score, sorted by score
     best_player = dict(gen=0,s=pop[0][1],p=pop[max_score_idx][0])
     best_players, best_score, best_time = [best_player], pop[max_score_idx][0].score, pop[max_time_idx][0].updates_survived
@@ -188,7 +188,7 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, net_u
             play_game(sub_players)
 
         # eval gen
-        scores, new_best_score, new_max_time, mean_score, mean_time, best_score_idx, best_time_idx = calc_fitness_scores(new_players)
+        scores, new_best_score, new_max_time, best_score_idx, best_time_idx = calc_fitness_scores(new_players)
         pop = [(p,s) for p,s in sorted(zip(new_players,scores), key=lambda x: x[1], reverse=True)]     # create list of tuples containing AI_Player and its associated score, sorted by score
         update = (num_iters % 10) == 0
         if new_best_score > best_score: 
@@ -205,9 +205,9 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, net_u
             
         percent_max = count / pop_size
   
-        print(f"{num_iters = }\n\tgen_avg = {'{:.2f}'.format(mean_score)}\tconsensus rate = {percent_max}\t{best_score = }\t{max_time = }\n")
+        print(f"{num_iters = }\n\tconsensus rate = {percent_max}\t{best_score = }\t{max_time = }\n")
 
-        out_file.write(f"{num_iters = }\n\tgen_avg = {'{:.2f}'.format(mean_score)}\tconsensus rate = {percent_max}\t{best_score = }\t{max_time = }\n")
+        out_file.write(f"{num_iters = }\n\tconsensus rate = {percent_max}\t{best_score = }\t{max_time = }\n")
         num_iters += 1
 
     end = time.time()
