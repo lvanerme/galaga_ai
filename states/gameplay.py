@@ -230,8 +230,6 @@ class Gameplay(BaseState):
                 shoot = player.update(player_x, player_y, enemy1_coords, enemy2_coords, rocket1_coords, rocket2_coords, rocket3_coords, dist_to_left, dist_to_right)
                 if shoot and len(player.rockets) < 2: self.shoot_rocket(player)
 
-        print(self.players[0].kill_countdown)       
-
         for player in self.players:
             if not player.freeze:
                 result = pygame.sprite.groupcollide(player.rockets, player.available_enemies, True, False)
