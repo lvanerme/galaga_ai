@@ -8,13 +8,14 @@ from states.splash import Splash
 from game import Game
 import constants
 
-def play_game(players=None):
+def play_game(players=None, show=False):
     # setup mixer to avoid sound lag
     # pygame.mixer.pre_init(44100, -16, 2, 2048)
     pygame.init()
     # pygame.mixer.init()
-    screen = pygame.display.set_mode((constants.SCREEN_WIDTH,
-                                    constants.SCREEN_HEIGHT), flags=pygame.HIDDEN)
+    if show: screen = pygame.display.set_mode((constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT))
+    else: screen = pygame.display.set_mode((constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT), flags=pygame.HIDDEN)
+    
     states = {
         # "MENU": Menu(),
         "SPLASH": Splash(),

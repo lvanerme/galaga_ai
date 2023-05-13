@@ -1,5 +1,3 @@
-import spritesheet
-import constants
 import math
 import time
 import struct
@@ -77,8 +75,8 @@ def mutation(c: AI_Player):
 
 def crossover(c1: AI_Player, c2: AI_Player):
     i_to_h_w_len, h_b_len, h_to_h_w_len, h_b2_len, h_to_o_w_len, o_b_len = len(c1.input_hidden_ws), len(c1.hidden_bs), len(c1.hidden_ws2), len(c1.hidden_bs2), len(c1.hidden_output_ws), len(c1.output_bs)
-    # combine all weight lists into one array
     
+    # combine all weight lists into one array
     combined1 = c1.input_hidden_ws + c1.hidden_bs + c1.hidden_ws2 + c1.hidden_bs2 + c1.hidden_output_ws + c1.output_bs
     combined2 = c2.input_hidden_ws + c2.hidden_bs + c2.hidden_ws2 + c2.hidden_bs2 + c2.hidden_output_ws + c2.output_bs
     combined_len = i_to_h_w_len + h_b_len + h_to_h_w_len + h_b2_len + h_to_o_w_len + o_b_len
@@ -101,35 +99,6 @@ def crossover(c1: AI_Player, c2: AI_Player):
     return parse_weight_list(i_to_h_w_len, h_b_len, h_to_h_w_len, h_b2_len, h_to_o_w_len, o_b_len, new_c)
 
 
-def weights_to_bin(c1: AI_Player, c2: AI_Player):
-    bin1, bin2 = '', ''
-    for i,val in enumerate(c1.input_hidden_ws):
-        b1 = bin(struct.unpack('!i', struct.pack('!f', val))[0]).replace('b', '').replace('-', '')
-        b2 = bin(struct.unpack('!i', struct.pack('!f', c2.input_hidden_ws[i]))[0]).replace('b', '').replace('-', '')
-        bin1 += b1.rjust(32, '0')
-        bin2 += b2.rjust(32, '0')
-    
-    for i,val in enumerate(c1.hidden_bs):
-        b1 = bin(struct.unpack('!i', struct.pack('!f', val))[0]).replace('b', '').replace('-', '')
-        b2 = bin(struct.unpack('!i', struct.pack('!f', c2.hidden_bs[i]))[0]).replace('b', '').replace('-', '')
-        bin1 += b1.rjust(32, '0')
-        bin2 += b2.rjust(32, '0')
-    
-    for i,val in enumerate(c1.hidden_output_ws):
-        b1 = bin(struct.unpack('!i', struct.pack('!f', val))[0]).replace('b', '').replace('-', '')
-        b2 = bin(struct.unpack('!i', struct.pack('!f', c2.hidden_output_ws[i]))[0]).replace('b', '').replace('-', '')
-        bin1 += b1.rjust(32, '0')
-        bin2 += b2.rjust(32, '0')
-        
-    for i,val in enumerate(c1.output_bs):
-        b1 = bin(struct.unpack('!i', struct.pack('!f', val))[0]).replace('b', '').replace('-', '')
-        b2 = bin(struct.unpack('!i', struct.pack('!f', c2.output_bs[i]))[0]).replace('b', '').replace('-', '')
-        bin1 += b1.rjust(32, '0')
-        bin2 += b2.rjust(32, '0')
-        
-    return bin1, bin2
-
-
 def calc_fitness_scores(players: list):
     sum_scores, sum_times, max_score, min_score, max_time, min_time, num_players = 0, 0, -1, maxsize, -1, maxsize, len(players)
     for p in players:
@@ -150,17 +119,16 @@ def calc_fitness_scores(players: list):
     fitness_scores = []
     for p in players:
         if max_score == min_score: score = max_score
-        else: score = (p.score - mean_score) / (max_score - min_score)
+        else: score = (p.score - mean_score) / (max_score - min_score)  # normalize scores
         
         if max_time == min_time: time = max_time
-        else: time = (p.updates_survived - mean_time) / (max_time - min_time)
-        fitness_scores.append((score + time) / 2)
+        else: time = (p.updates_survived - mean_time) / (max_time - min_time)   # normalize times
+        fitness_scores.append((score + time) / 2)   # score is evenly weighted between scores and time
         
     return fitness_scores, max_score, max_time, mean_score, mean_time
         
 
 def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, net_units2=6, N=2):
-    # gen start pop
     start = time.time()
     players = gen_seed(net_units, net_units2, pop_size)
     #Grab subset of population to make game run faster
@@ -171,14 +139,13 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, net_u
 
     scores, best_score, max_time, mean_score, mean_time = calc_fitness_scores(players)
     pop = [(p,s) for p,s in sorted(zip(players,scores), key=lambda x: x[1], reverse=True)]     # create list of tuples containing AI_Player and its associated score, sorted by score
-    best_score = pop[0][1]
-    best_player = pop[0][0]
-    
+    best_player = dict(gen=0,s=pop[0][1],p=pop[0][0])
+    best_players, best_score = [best_player], pop[0][1]
     del players      
     
     # main loop
     num_iters = 0
-    out_file = open("output_basic.txt", "w")
+    out_file = open('output_basic.txt', 'w')
     while num_iters < max_iters:
         # new_players, new_len = [], 0
         new_players, new_len = [pop[i][0] for i in range(5)], 5         # grab 5 best from previous gen and automatically add them to new_pop
@@ -215,22 +182,19 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, net_u
             sub_players = new_players[i:i+NUM_PLAYERS]
             play_game(sub_players)
 
+        # eval gen
         scores, new_best_score, new_max_time, mean_score, mean_time = calc_fitness_scores(new_players)
         pop = [(p,s) for p,s in sorted(zip(new_players,scores), key=lambda x: x[1], reverse=True)]     # create list of tuples containing AI_Player and its associated score, sorted by score
-        if new_best_score > best_score: 
-            best_score = new_best_score
-            del best_player
-            best_player = pop[0][0]
+        if new_best_score > best_score: best_score = new_best_score
         if new_max_time > max_time: max_time = new_max_time
+        if num_iters % 10 == 0: best_players.append(dict(gen=num_iters,s=pop[0][1],p=pop[0][0]))    # save best player every 10 gens
 
-        # eval gen
-        gen_max, count = max(scores), 0
-        if gen_max > best_score: best_score = gen_max
+        gen_max, count = pop[0][1], 0
+        # if gen_max > best_score: best_score = gen_max # I think this is done above?
         for score in scores:
             if score == gen_max: count += 1
-        
+            
         percent_max = count / pop_size
-        # gen_avg = np.average(scores)
   
         print(f"{num_iters = }\n\tgen_avg = {'{:.2f}'.format(mean_score)}\tconsensus rate = {percent_max}\t{best_score = }\t{max_time = }\n")
 
@@ -241,10 +205,13 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, net_u
     out_file.write(f'{start = }\t{end = }\ttotal time = {end - start}')
     out_file.close()
     
+    # save best player's weights for preview
     out_player = open('best_player.txt', 'w')
-    out_player.write(f'input_hidden_ws = {best_player.input_hidden_ws}\nhidden_bs = {best_player.hidden_bs}\nhidden_ws2 = {best_player.hidden_ws2}\nhidden_bs2 = {best_player.hidden_bs2}\nhidden_output_ws = {best_player.hidden_output_ws}\noutput_bs = {best_player.output_bs}\n')
+    for chromosome in best_players:
+        gen, s, p = chromosome['gen'], chromosome['s'], chromosome['p']
+        out_player.write(f'Best player of generation {gen} score = {s}\n')
+        out_player.write(f'input_hidden_ws = {p.input_hidden_ws}\nhidden_bs = {p.hidden_bs}\nhidden_ws2 = {p.hidden_ws2}\nhidden_bs2 = {p.hidden_bs2}\nhidden_output_ws = {p.hidden_output_ws}\noutput_bs = {p.output_bs}\n')
     out_player.close()
-
 
     
 ga(105, mut_rate=0.3, cross_rate=0.6, max_iters=100, N = 10)
