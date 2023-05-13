@@ -9,7 +9,6 @@ from sys import maxsize
 from random import random, randrange, randint, uniform, choice, choices
 from tensorflow import random_normal_initializer, Variable
 from sprites.ai_player import AI_Player
-from copy import deepcopy
 
 
 def gen_seed(net_units, net_units2, pop_size) -> list:
@@ -65,7 +64,7 @@ def mutation(c: AI_Player):
     combined_len = i_to_h_w_len + h_b_len + h_to_h_w_len + h_b2_len + h_to_o_w_len + o_b_len
     combined = c.input_hidden_ws + c.hidden_bs + c.hidden_ws2 + c.hidden_bs2 + c.hidden_output_ws + c.output_bs
     
-    num_mutations = randint(1, math.floor(combined_len / 10))
+    num_mutations = randint(1, math.floor(combined_len / 5))
     indices = [i for i in range(combined_len)]
     genes = [np.random.choice(indices, replace=False) for _ in range(num_mutations)]       # grab num_mutations random genes
     for gene in genes:
@@ -173,6 +172,7 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, net_u
     scores, best_score, max_time, mean_score, mean_time = calc_fitness_scores(players)
     pop = [(p,s) for p,s in sorted(zip(players,scores), key=lambda x: x[1], reverse=True)]     # create list of tuples containing AI_Player and its associated score, sorted by score
     best_score = pop[0][1]
+    best_player = pop[0][0]
     
     del players      
     
@@ -217,7 +217,10 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, net_u
 
         scores, new_best_score, new_max_time, mean_score, mean_time = calc_fitness_scores(new_players)
         pop = [(p,s) for p,s in sorted(zip(new_players,scores), key=lambda x: x[1], reverse=True)]     # create list of tuples containing AI_Player and its associated score, sorted by score
-        if new_best_score > max_score: best_score = new_best_score
+        if new_best_score > max_score: 
+            best_score = new_best_score
+            del best_player
+            best_player = pop[0][0]
         if new_max_time > max_time: max_time = new_max_time
 
         # eval gen
@@ -229,15 +232,19 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, net_u
         percent_max = count / pop_size
         # gen_avg = np.average(scores)
   
-        print(f"{num_iters = }\n\tgen_avg = {'{:.2f}'.format(mean_score)}\tconsensus rate = {percent_max}\t{best_score = }\t{max_time = }\n")
+        # print(f"{num_iters = }\n\tgen_avg = {'{:.2f}'.format(mean_score)}\tconsensus rate = {percent_max}\t{best_score = }\t{max_time = }\n")
 
         out_file.write(f"{num_iters = }\n\tgen_avg = {'{:.2f}'.format(mean_score)}\tconsensus rate = {percent_max}\t{best_score = }\t{max_time = }\n")
         num_iters += 1
 
     end = time.time()
-    out_file.write(f'{start = }\t{end = }\n')
+    out_file.write(f'{start = }\t{end = }\ttotal time = {end - start}')
     out_file.close()
+    
+    out_player = open('best_player.txt', 'w')
+    out_player.write(f'input_hidden_ws = {best_player.input_hidden_ws}\nhidden_bs = {best_player.hidden_bs}\nhidden_ws2 = {best_player.hidden_ws2}\nhidden_bs2 = {best_player.hidden_bs2}\nhidden_output_ws = {best_player.hidden_output_ws}\noutput_bs = {best_player.output_bs}\n')
+    out_player.close()
 
 
     
-ga(100, mut_rate=0.3, cross_rate=0.7, max_iters=100)
+ga(100, mut_rate=0.3, cross_rate=0.3, max_iters=250)
