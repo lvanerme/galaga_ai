@@ -7,7 +7,7 @@ def test_model(filename: str):
     for i in range(0, len(data), 7):    # currently 6 sets of weights in NN
         all_weights = []
         metadata = data[i].split()
-        player_metadata.append([metadata[5], metadata[7]])
+        player_metadata.append([metadata[5], metadata[7], metadata[9]])
         for j in range(i+1, i+7):
             weights_str, weights_float = resplit('\[|\]', data[j])[1].split(','), []
             for w in weights_str: weights_float.append(float(w))
@@ -16,8 +16,8 @@ def test_model(filename: str):
         players.append(AI_Player(input_hidden_ws, hidden_bs, hidden_ws2, hidden_bs2, hidden_output_ws, output_bs))
     
     for p in range(len(players)):
-        gen, score = player_metadata[p] 
-        print(f'{gen = }\t{score = }')
+        gen, score, time = player_metadata[p] 
+        print(f'{gen = }\t{score = }\t{time = }')
         play_game([players[p]], show=True)   # play each player individually...TODO: show generation of individual?
             
 def test_model_old(filename: str):
