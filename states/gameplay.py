@@ -216,6 +216,9 @@ class Gameplay(BaseState):
                     screen.blit(text, (entity.rect.center[0]-15, entity.rect.center[1]))
                 else: screen.blit(text, (entity.rect.center[0], entity.rect.center[1]))
 
+        text = self.font.render(f'{self.total_updates}', True, (255,0,0))
+        screen.blit(text, (900, 10))    
+
         # if self.show_control:
         #     for entity in self.control_sprites:
         #         screen.blit(entity.get_surf(), entity.rect)
