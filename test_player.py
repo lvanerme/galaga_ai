@@ -7,14 +7,14 @@ def test_model(filename: str):
     for i in range(0, len(data), 7):    # currently 6 sets of weights in NN
         all_weights = []
         metadata = data[i].split()
-        player_metadata.append([metadata[5], metadata[7], metadata[9]])
+        player_metadata.append([metadata[4], metadata[7], metadata[10]])
         for j in range(i+1, i+7):
             weights_str, weights_float = resplit('\[|\]', data[j])[1].split(','), []
             for w in weights_str: weights_float.append(float(w))
             all_weights.append(weights_float)
         input_hidden_ws, hidden_bs, hidden_ws2, hidden_bs2, hidden_output_ws, output_bs = all_weights
         players.append(AI_Player(input_hidden_ws, hidden_bs, hidden_ws2, hidden_bs2, hidden_output_ws, output_bs))
-    
+        print(input_hidden_ws)
     for p in range(len(players)):
         gen, score, time = player_metadata[p] 
         print(f'{gen = }\t{score = }\t{time = }')
