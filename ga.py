@@ -149,9 +149,9 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, net_u
     del players      
     
     # main loop
-    num_iters = 0
+    num_iters = 1
     out_file = open('output_basic_test.txt', 'w')
-    while num_iters < max_iters:
+    while num_iters <= max_iters:
         # new_players, new_len = [], 0
         new_players, new_len = [pop[i][0] for i in range(5)], 5         # grab 5 best from previous gen and automatically add them to new_pop
         for player in new_players: 
