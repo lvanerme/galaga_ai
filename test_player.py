@@ -7,7 +7,7 @@ def test_model(filename: str):
     for i in range(0, len(data), 7):    # currently 6 sets of weights in NN
         all_weights = []
         metadata = data[i].split()
-        player_metadata.append([metadata[5], metadata[7], metadata[9]])
+        player_metadata.append([metadata[4], metadata[7], metadata[10]])
         for j in range(i+1, i+7):
             weights_str, weights_float = resplit('\[|\]', data[j])[1].split(','), []
             for w in weights_str: weights_float.append(float(w))
@@ -34,4 +34,4 @@ def test_model_old(filename: str):
     for player in players:
         play_game([player], show=True)   # play each player individually...TODO: show generation of individual?
 
-test_model_old("best_player.txt")
+test_model("best_player_test.txt")
