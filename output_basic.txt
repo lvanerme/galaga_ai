@@ -1,0 +1,82 @@
+num_iters = 0
+	consensus rate = 0.009523809523809525	best_score = 3720	max_time = 1206
+num_iters = 1
+	consensus rate = 0.009523809523809525	best_score = 3720	max_time = 1206
+num_iters = 2
+	consensus rate = 0.009523809523809525	best_score = 5280	max_time = 1206
+num_iters = 3
+	consensus rate = 0.009523809523809525	best_score = 5280	max_time = 1206
+num_iters = 4
+	consensus rate = 0.009523809523809525	best_score = 5280	max_time = 1206
+num_iters = 5
+	consensus rate = 0.009523809523809525	best_score = 5280	max_time = 1206
+num_iters = 6
+	consensus rate = 0.009523809523809525	best_score = 5280	max_time = 1206
+num_iters = 7
+	consensus rate = 0.009523809523809525	best_score = 7680	max_time = 1206
+num_iters = 8
+	consensus rate = 0.009523809523809525	best_score = 7680	max_time = 1206
+num_iters = 9
+	consensus rate = 0.009523809523809525	best_score = 7680	max_time = 1206
+num_iters = 10
+	consensus rate = 0.009523809523809525	best_score = 7680	max_time = 1206
+num_iters = 11
+	consensus rate = 0.009523809523809525	best_score = 7680	max_time = 1206
+num_iters = 12
+	consensus rate = 0.009523809523809525	best_score = 7680	max_time = 1206
+num_iters = 13
+	consensus rate = 0.009523809523809525	best_score = 7680	max_time = 1206
+num_iters = 14
+	consensus rate = 0.009523809523809525	best_score = 7680	max_time = 1206
+num_iters = 15
+	consensus rate = 0.009523809523809525	best_score = 7680	max_time = 1206
+num_iters = 16
+	consensus rate = 0.009523809523809525	best_score = 7680	max_time = 1206
+num_iters = 17
+	consensus rate = 0.009523809523809525	best_score = 7680	max_time = 1206
+num_iters = 18
+	consensus rate = 0.009523809523809525	best_score = 7680	max_time = 1206
+num_iters = 19
+	consensus rate = 0.009523809523809525	best_score = 7680	max_time = 1206
+num_iters = 20
+	consensus rate = 0.009523809523809525	best_score = 7680	max_time = 1206
+num_iters = 21
+	consensus rate = 0.009523809523809525	best_score = 7680	max_time = 1206
+num_iters = 22
+	consensus rate = 0.009523809523809525	best_score = 7680	max_time = 1206
+num_iters = 23
+	consensus rate = 0.009523809523809525	best_score = 7680	max_time = 1206
+num_iters = 24
+	consensus rate = 0.009523809523809525	best_score = 7680	max_time = 1206
+num_iters = 25
+	consensus rate = 0.009523809523809525	best_score = 7680	max_time = 1206
+num_iters = 26
+	consensus rate = 0.009523809523809525	best_score = 7680	max_time = 1206
+num_iters = 27
+	consensus rate = 0.009523809523809525	best_score = 7680	max_time = 1206
+num_iters = 28
+	consensus rate = 0.009523809523809525	best_score = 7680	max_time = 1206
+num_iters = 29
+	consensus rate = 0.009523809523809525	best_score = 7680	max_time = 1206
+num_iters = 30
+	consensus rate = 0.009523809523809525	best_score = 7680	max_time = 1206
+num_iters = 31
+	consensus rate = 0.009523809523809525	best_score = 7680	max_time = 1206
+num_iters = 32
+	consensus rate = 0.009523809523809525	best_score = 7680	max_time = 1206
+num_iters = 33
+	consensus rate = 0.009523809523809525	best_score = 7680	max_time = 1206
+num_iters = 34
+	consensus rate = 0.009523809523809525	best_score = 7680	max_time = 1206
+num_iters = 35
+	consensus rate = 0.009523809523809525	best_score = 7680	max_time = 1206
+num_iters = 36
+	consensus rate = 0.009523809523809525	best_score = 7680	max_time = 1206
+num_iters = 37
+	consensus rate = 0.009523809523809525	best_score = 7680	max_time = 1206
+num_iters = 38
+	consensus rate = 0.009523809523809525	best_score = 7680	max_time = 1206
+num_iters = 39
+	consensus rate = 0.009523809523809525	best_score = 7680	max_time = 1206
+num_iters = 40
+	consensus rate = 0.009523809523809525	best_score = 7680	max_time = 1206

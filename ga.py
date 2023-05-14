@@ -125,7 +125,7 @@ def calc_fitness_scores(players: list):
     for p in players:
         if max_score == min_score: score = max_score
         else: score = (p.score - mean_score) / (max_score - min_score)  # normalize scores
-        
+        score *= 1.5
         if max_time == min_time: time = max_time
         else: time = (p.updates_survived - mean_time) / (max_time - min_time)   # normalize times
         fitness_scores.append((score + time) / 2)   # score is evenly weighted between scores and time
@@ -223,4 +223,4 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, net_u
     out_player.close()
 
     
-ga(100, mut_rate=0.5, cross_rate=0.2, max_iters=100, N=10)
+ga(100, mut_rate=0.6, cross_rate=0.3, max_iters=50, N=10)

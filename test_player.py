@@ -14,7 +14,7 @@ def test_model(filename: str):
             all_weights.append(weights_float)
         input_hidden_ws, hidden_bs, hidden_ws2, hidden_bs2, hidden_output_ws, output_bs = all_weights
         players.append(AI_Player(input_hidden_ws, hidden_bs, hidden_ws2, hidden_bs2, hidden_output_ws, output_bs))
-    
+        print(input_hidden_ws)
     for p in range(len(players)):
         gen, score, time = player_metadata[p] 
         print(f'{gen = }\t{score = }\t{time = }')
