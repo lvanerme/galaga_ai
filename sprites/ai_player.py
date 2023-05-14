@@ -33,7 +33,7 @@ class AI_Player(Player):
         pass
     
     
-    def update(self, player_x, player_y, enemy1_coords, enemy2_coords, rocket1_coords, rocket2_coords, rocket3_coords, dist_to_left, dist_to_right):
+    def update(self, player_x, player_y, enemy1_coords, enemy2_coords, rocket1_coords, rocket2_coords, rocket3_coords, can_move_left, can_move_right):
         self.updates_survived += 1
         self.kill_countdown -= 1
 
@@ -43,10 +43,9 @@ class AI_Player(Player):
         r2_x, r2_y = rocket2_coords
         r3_x, r3_y = rocket3_coords
 
-        data_array = np.array([player_x, player_y, e1_x, e1_y, e2_x, e2_y, r1_x, r1_y, r2_x, r2_y, r3_x, r3_y, dist_to_left, dist_to_right], dtype='int64')
+        data_array = np.array([player_x, player_y, e1_x, e1_y, e2_x, e2_y, r1_x, r1_y, r2_x, r2_y, r3_x, r3_y, can_move_left, can_move_right], dtype='int64')
         data_array = data_array.reshape(1,-1)
         results = self.model(data_array, training=False)
-        # results = self.model.predict(data_array, verbose=0)
         move = np.argmax(results)
 
         if move == 0: self.rect.move_ip(-5, 0)       # Left
@@ -61,13 +60,13 @@ class AI_Player(Player):
     def configure_model(self, input_hidden_ws, hidden_bs, hidden_ws2, hidden_bs2, hidden_output_ws, output_bs):
         model = Sequential()
         model.add(Input((14, )))
+        model.add(Dense(units=12, activation = 'sigmoid'))
         model.add(Dense(units=8, activation = 'sigmoid'))
-        model.add(Dense(units=6, activation = 'sigmoid'))
         model.add(Dense(units=4, activation = 'relu'))
         
-        hidden_weights = [np.array(input_hidden_ws).reshape(14,8), np.array(hidden_bs)]
-        hidden_weights2 = [np.array(hidden_ws2).reshape(8,6), np.array(hidden_bs2)]
-        output_weights = [np.array(hidden_output_ws).reshape(6,4), np.array(output_bs)]
+        hidden_weights = [np.array(input_hidden_ws).reshape(14,12), np.array(hidden_bs)]
+        hidden_weights2 = [np.array(hidden_ws2).reshape(12,8), np.array(hidden_bs2)]
+        output_weights = [np.array(hidden_output_ws).reshape(8,4), np.array(output_bs)]
         # hidden_weights = np.array([input_hidden_ws, hidden_bs]).reshape(12, 8)
         # output_weights = np.array([hidden_output_ws, output_bs]).reshape(8, 4)
         model.layers[0].set_weights(hidden_weights)
