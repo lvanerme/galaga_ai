@@ -17,6 +17,7 @@ from bezier.path_point_selector import PathPointSelector
 ADDENEMY = pygame.USEREVENT + 1
 ENEMYSHOOTS = pygame.USEREVENT + 2
 FREEZE = pygame.USEREVENT + 3
+KILLALL = pygame.USEREVENT + 4
 
 import math
 
@@ -126,6 +127,8 @@ class Gameplay(BaseState):
             for player in self.players:
                 if not player.freeze:
                     self.done = False
+        if event.type == KILLALL:
+            self.done = True
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_ESCAPE:
                 self.control_points1.save_control_points()
@@ -194,6 +197,8 @@ class Gameplay(BaseState):
         if self.enemyshoots_timer == 17: 
             pygame.event.post(pygame.event.Event(ENEMYSHOOTS))
             self.enemyshoots_timer = 0
+        if self.total_updates == 15000:
+            pygame.event.post(pygame.event.Event(KILLALL))
 
         for entity in self.all_sprites:
             if type(entity) == AI_Player: continue
