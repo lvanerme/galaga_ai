@@ -23,9 +23,12 @@ import math
 class Gameplay(BaseState):
     def __init__(self, players: list):
         super(Gameplay, self).__init__()
-        pygame.time.set_timer(ADDENEMY, 450)
-        pygame.time.set_timer(ENEMYSHOOTS, 1000)
-        pygame.time.set_timer(FREEZE, 2000)
+        # pygame.time.set_timer(ADDENEMY, 450)
+        # pygame.time.set_timer(ENEMYSHOOTS, 1000)
+        pygame.time.set_timer(FREEZE, 1000)
+        self.addenemy_timer = 0
+        self.enemyshoots_timer = 0
+        self.total_updates = 0
 
         self.rect = pygame.Rect((0, 0), (80, 80))
         self.next_state = "GAME_OVER"
@@ -43,7 +46,6 @@ class Gameplay(BaseState):
         
         self.all_sprites = pygame.sprite.Group()
         self.players = players
-        # self.player = AI_Player(self.sprites,-1,-1,-1,-1) if not player else player
         player_num = 1
         for player in self.players:
             player.start(spritesheet.SpriteSheet(constants.SPRITE_SHEET))
@@ -128,11 +130,6 @@ class Gameplay(BaseState):
             if event.key == pygame.K_ESCAPE:
                 self.control_points1.save_control_points()
                 self.done = True
-        #     if event.key == pygame.K_s:
-        #         self.show_control = not self.show_control
-        #     if event.key == pygame.K_SPACE:
-        #         if len(self.all_rockets) < 2:
-        #             self.shoot_rocket()
 
     def add_enemy(self):
         self.enemies += 1
@@ -188,6 +185,16 @@ class Gameplay(BaseState):
                         player.targeted_rockets.add(rocket)
 
     def draw(self, screen):
+        self.total_updates += 1
+        self.addenemy_timer += 1
+        self.enemyshoots_timer += 1
+        if self.addenemy_timer == 8: 
+            pygame.event.post(pygame.event.Event(ADDENEMY))
+            self.addenemy_timer = 0
+        if self.enemyshoots_timer == 17: 
+            pygame.event.post(pygame.event.Event(ENEMYSHOOTS))
+            self.enemyshoots_timer = 0
+
         for entity in self.all_sprites:
             if type(entity) == AI_Player: continue
             entity.update(None)
