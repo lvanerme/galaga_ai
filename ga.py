@@ -137,7 +137,7 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, net_u
     start = time.time()
     players = gen_seed(net_units, net_units2, pop_size)
     #Grab subset of population to make game run faster
-    NUM_PLAYERS = 50
+    NUM_PLAYERS = 25
     for i in range(0, pop_size-1, NUM_PLAYERS):
         sub_players = players[i:i+NUM_PLAYERS]
         play_game(sub_players)
@@ -224,4 +224,4 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, net_u
     out_player.close()
 
     
-ga(100, mut_rate=0.5, cross_rate=0.3, max_iters=75, net_units=12, net_units2=8, N=10)
+ga(100, mut_rate=0.5, cross_rate=0.3, max_iters=50, net_units=12, net_units2=8, N=10)

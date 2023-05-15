@@ -202,7 +202,7 @@ class Gameplay(BaseState):
 
         if self.total_updates == 200:
             for player in self.players:
-                if not player.has_moved:
+                if not player.has_moved and not player.freeze:
                     player.score = 0
                     player.updates_survived = 0
                     player.freeze = True
