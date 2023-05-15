@@ -126,7 +126,7 @@ def calc_fitness_scores(players: list):
         else: score = (p.score - mean_score) / (max_score - min_score)  # normalize scores
         if max_time == min_time: time = max_time
         else: time = (p.updates_survived - mean_time) / (max_time - min_time)   # normalize times
-        fitness_scores.append(score)   # score is evenly weighted between scores and time
+        fitness_scores.append(score + time)   # score is evenly weighted between scores and time
         
     return fitness_scores, max_score, max_time, max_score_idx, max_time_idx, mean_score, mean_time
         
@@ -151,7 +151,6 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, net_u
     num_iters = 1
     out_file = open('output_basic_test.txt', 'w')
     while num_iters <= max_iters:
-        # new_players, new_len = [], 0
         update = (num_iters % 10) == 0
         new_players, new_len = [pop[i][0] for i in range(5)], 5         # grab 5 best from previous gen and automatically add them to new_pop
         for player in new_players: 
@@ -196,12 +195,6 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, net_u
         if new_max_time > best_time: 
             best_time = new_max_time
             best_players.append(dict(gen=num_iters,s=best_score,t=best_time,p=pop[best_time_idx][0]))
-
-        # gen_max, count = pop[0][1], 0
-        # for score in scores:
-        #     if score == gen_max: count += 1
-            
-        # percent_max = count / pop_size
   
         print(f"{num_iters = }\n\t{best_score = }\t{best_time = }\tgen mean score = {mean_score}\tgen mean time = {mean_time}\n")
         out_file.write(f"{num_iters = }\n\t{best_score = }\t{best_time = }\tgen mean score = {mean_score}\tgen mean time = {mean_time}\n")
