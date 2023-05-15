@@ -192,10 +192,10 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, net_u
         pop = [(p,s) for p,s in sorted(zip(new_players,scores), key=lambda x: x[1], reverse=True)]     # create list of tuples containing AI_Player and its associated score, sorted by score
         if new_best_score > best_score: 
             best_score = new_best_score
-            if update: best_players.append(dict(gen=num_iters,s=best_score,t=best_time,p=pop[best_score_idx][0]))
+            best_players.append(dict(gen=num_iters,s=best_score,t=best_time,p=pop[best_score_idx][0]))
         if new_max_time > best_time: 
             best_time = new_max_time
-            if update: best_players.append(dict(gen=num_iters,s=best_score,t=best_time,p=pop[best_time_idx][0]))
+            best_players.append(dict(gen=num_iters,s=best_score,t=best_time,p=pop[best_time_idx][0]))
 
         # gen_max, count = pop[0][1], 0
         # for score in scores:
