@@ -250,9 +250,9 @@ class Gameplay(BaseState):
                 enemy1_coords, enemy2_coords = self.get_closest_enemies(player_x, player_y)
                 rocket1_coords, rocket2_coords, rocket3_coords = self.get_closest_rockets(player_x, player_y)
                 dist_to_left, dist_to_right = player.rect.left, (constants.SCREEN_WIDTH - player.rect.right)
-                # can_move_left = 1 if player.rect.left > 0 else 0
-                # can_move_right = 1 if (constants.SCREEN_WIDTH - player.rect.right) > 0 else 0
-                shoot = player.update(player_x, player_y, enemy1_coords, enemy2_coords, rocket1_coords, rocket2_coords, rocket3_coords, dist_to_left, dist_to_right)
+                can_move_left = 1 if player.rect.left > 0 else 0
+                can_move_right = 1 if (constants.SCREEN_WIDTH - player.rect.right) > 0 else 0
+                shoot = player.update(player_x, enemy1_coords, enemy2_coords, rocket1_coords, rocket2_coords, rocket3_coords, can_move_left, can_move_right, dist_to_left, dist_to_right)
                 if shoot and len(player.rockets) < 2: self.shoot_rocket(player)
 
         for player in self.players:

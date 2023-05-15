@@ -1,6 +1,5 @@
 import math
 import time
-import struct
 import numpy as np
 from main import play_game
 from sys import maxsize as MAXSIZE
@@ -14,7 +13,7 @@ def gen_seed(net_units, net_units2, pop_size) -> list:
     for _ in range(pop_size):
         # weights for one chromosome
         input_hidden_w_init, hidden_b_init, hidden_w2_init, hidden_b2_init, hidden_output_w_init, output_b_init = random_normal_initializer(), random_normal_initializer(), random_normal_initializer(), random_normal_initializer(), random_normal_initializer(), random_normal_initializer()
-        input_hidden_ws_tf = Variable(initial_value = input_hidden_w_init(shape=(14, net_units), dtype='float32'), trainable=True)
+        input_hidden_ws_tf = Variable(initial_value = input_hidden_w_init(shape=(15, net_units), dtype='float32'), trainable=True)
         hidden_bs_tf = Variable(initial_value = hidden_b_init(shape=(net_units,), dtype='float32'), trainable=True)
         hidden_ws_tf2 = Variable(initial_value = hidden_w2_init(shape=(net_units, net_units2), dtype='float32'), trainable=True)
         hidden_bs_tf2 = Variable(initial_value = hidden_b2_init(shape=(net_units2,), dtype='float32'), trainable=True)
@@ -85,14 +84,14 @@ def crossover(c1: AI_Player, c2: AI_Player):
     low = randrange(0, (combined_len - 1))
     high = randrange(low, combined_len)
     
-    # fill crossover range from c1
-    for i in range(low, high): new_c[i] = combined1[i]
+    # fill crossover range from c2
+    for i in range(low, high): new_c[i] = combined2[i]
     
-    # fill remaining spots from c2
+    # fill remaining spots from c1
     j = high
     while None in new_c:
         j = j % combined_len
-        new_c[j] = combined2[j]
+        new_c[j] = combined1[j]
         j += 1
     
     # split back into weight arrays
@@ -125,24 +124,24 @@ def calc_fitness_scores(players: list):
     for p in players:
         if max_score == min_score: score = max_score
         else: score = (p.score - mean_score) / (max_score - min_score)  # normalize scores
-        # if max_time == min_time: time = max_time
-        # else: time = (p.updates_survived - mean_time) / (max_time - min_time)   # normalize times
-        # fitness_scores.append((score + time) / 2)   # score is evenly weighted between scores and time
-        fitness_scores.append(score)
+        if max_time == min_time: time = max_time
+        else: time = (p.updates_survived - mean_time) / (max_time - min_time)   # normalize times
+        fitness_scores.append(score)   # score is evenly weighted between scores and time
         
-    return fitness_scores, max_score, max_time, max_score_idx, max_time_idx
+    return fitness_scores, max_score, max_time, max_score_idx, max_time_idx, mean_score, mean_time
         
 
 def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, net_units2=6, N=2):
     start = time.time()
     players = gen_seed(net_units, net_units2, pop_size)
+    
     #Grab subset of population to make game run faster
     NUM_PLAYERS = 25
     for i in range(0, pop_size-1, NUM_PLAYERS):
         sub_players = players[i:i+NUM_PLAYERS]
         play_game(sub_players)
 
-    scores, best_score, max_time, max_score_idx, max_time_idx = calc_fitness_scores(players)
+    scores, best_score, max_time, max_score_idx, max_time_idx, mean_score, mean_time = calc_fitness_scores(players)
     pop = [(p,s) for p,s in sorted(zip(players,scores), key=lambda x: x[1], reverse=True)]     # create list of tuples containing AI_Player and its associated score, sorted by score
     best_player = dict(gen=0,s=pop[0][1],t=pop[max_score_idx][0].updates_survived,p=pop[max_score_idx][0])
     best_players, best_score, best_time = [best_player], pop[max_score_idx][0].score, pop[max_time_idx][0].updates_survived
@@ -186,11 +185,10 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, net_u
 
         for i in range(0, pop_size, NUM_PLAYERS):
             sub_players = new_players[i:i+NUM_PLAYERS]
-            if update: play_game(sub_players, show=True)
-            else: play_game(sub_players)
+            play_game(sub_players)
 
         # eval gen
-        scores, new_best_score, new_max_time, best_score_idx, best_time_idx = calc_fitness_scores(new_players)
+        scores, new_best_score, new_max_time, best_score_idx, best_time_idx, mean_score, mean_time = calc_fitness_scores(new_players)
         pop = [(p,s) for p,s in sorted(zip(new_players,scores), key=lambda x: x[1], reverse=True)]     # create list of tuples containing AI_Player and its associated score, sorted by score
         if new_best_score > best_score: 
             best_score = new_best_score
@@ -199,16 +197,14 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, net_u
             best_time = new_max_time
             if update: best_players.append(dict(gen=num_iters,s=best_score,t=best_time,p=pop[best_time_idx][0]))
 
-        gen_max, count = pop[0][1], 0
-        # if gen_max > best_score: best_score = gen_max # I think this is done above?
-        for score in scores:
-            if score == gen_max: count += 1
+        # gen_max, count = pop[0][1], 0
+        # for score in scores:
+        #     if score == gen_max: count += 1
             
-        percent_max = count / pop_size
+        # percent_max = count / pop_size
   
-        print(f"{num_iters = }\n\tconsensus rate = {percent_max}\t{best_score = }\t{best_time = }\n")
-
-        out_file.write(f"{num_iters = }\n\tconsensus rate = {percent_max}\t{best_score = }\t{best_time = }\n")
+        print(f"{num_iters = }\n\t{best_score = }\t{best_time = }\tgen mean score = {mean_score}\tgen mean time = {mean_time}\n")
+        out_file.write(f"{num_iters = }\n\t{best_score = }\t{best_time = }\tgen mean score = {mean_score}\tgen mean time = {mean_time}\n")
         num_iters += 1
 
     end = time.time()
