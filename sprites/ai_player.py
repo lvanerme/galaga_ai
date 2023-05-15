@@ -58,7 +58,7 @@ class AI_Player(Player):
         if self.rect.left < 0: self.rect.left = 0
         if self.rect.right > constants.SCREEN_WIDTH: self.rect.right = constants.SCREEN_WIDTH
             
-        return move == 3        # Shoot rocket else stay still
+        return move                    # Shoot rocket else stay still
 
 
     def configure_model(self, input_hidden_ws, hidden_bs, hidden_ws2, hidden_bs2, hidden_output_ws, output_bs):
