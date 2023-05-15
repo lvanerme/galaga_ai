@@ -22,6 +22,7 @@ class AI_Player(Player):
         self.updates_survived = 0
         self.player_num = 0
         self.kill_countdown = 600
+        self.has_moved = False
     
     
     def start(self, sprites):
@@ -47,8 +48,12 @@ class AI_Player(Player):
         results = self.model(data_array, training=False)
         move = np.argmax(results)
 
-        if move == 0: self.rect.move_ip(-5, 0)       # Left
-        elif move == 1: self.rect.move_ip(5, 0)      # Right
+        if move == 0: 
+            self.rect.move_ip(-5, 0)    # Left
+            self.has_moved = True
+        elif move == 1: 
+            self.rect.move_ip(5, 0)     # Right
+            self.has_moved = True
         
         if self.rect.left < 0: self.rect.left = 0
         if self.rect.right > constants.SCREEN_WIDTH: self.rect.right = constants.SCREEN_WIDTH

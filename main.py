@@ -8,7 +8,7 @@ from states.splash import Splash
 from game import Game
 import constants
 
-def play_game(players=None, show=False):
+def play_game(players=None, show=True):
     # setup mixer to avoid sound lag
     # pygame.mixer.pre_init(44100, -16, 2, 2048)
     pygame.init()
