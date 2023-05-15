@@ -1,6 +1,5 @@
 import math
 import time
-import struct
 import numpy as np
 from main import play_game
 from sys import maxsize as MAXSIZE
@@ -125,10 +124,10 @@ def calc_fitness_scores(players: list):
     for p in players:
         if max_score == min_score: score = max_score
         else: score = (p.score - mean_score) / (max_score - min_score)  # normalize scores
-        # if max_time == min_time: time = max_time
-        # else: time = (p.updates_survived - mean_time) / (max_time - min_time)   # normalize times
-        # fitness_scores.append((score + time) / 2)   # score is evenly weighted between scores and time
-        fitness_scores.append(score)
+        if max_time == min_time: time = max_time
+        else: time = (p.updates_survived - mean_time) / (max_time - min_time)   # normalize times
+        fitness_scores.append((score*3) + time)   # score is evenly weighted between scores and time
+        # fitness_scores.append(score)
         
     return fitness_scores, max_score, max_time, max_score_idx, max_time_idx
         
@@ -186,8 +185,7 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, net_u
 
         for i in range(0, pop_size, NUM_PLAYERS):
             sub_players = new_players[i:i+NUM_PLAYERS]
-            if update: play_game(sub_players, show=True)
-            else: play_game(sub_players)
+            play_game(sub_players, show=update)
 
         # eval gen
         scores, new_best_score, new_max_time, best_score_idx, best_time_idx = calc_fitness_scores(new_players)
@@ -200,7 +198,6 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, net_u
             if update: best_players.append(dict(gen=num_iters,s=best_score,t=best_time,p=pop[best_time_idx][0]))
 
         gen_max, count = pop[0][1], 0
-        # if gen_max > best_score: best_score = gen_max # I think this is done above?
         for score in scores:
             if score == gen_max: count += 1
             
@@ -224,4 +221,4 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, net_u
     out_player.close()
 
     
-ga(100, mut_rate=0.5, cross_rate=0.0, max_iters=50, net_units=12, net_units2=8, N=10)
+ga(100, mut_rate=0.5, cross_rate=0.5, max_iters=50, net_units=12, net_units2=8, N=10)

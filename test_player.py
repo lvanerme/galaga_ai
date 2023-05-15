@@ -33,4 +33,4 @@ def test_model_old(filename: str):
     for player in players:
         play_game([player], show=True)   # play each player individually...TODO: show generation of individual?
 
-test_model("../test_files/best_player_test.txt")
+test_model("best_player_test.txt")

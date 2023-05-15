@@ -5,7 +5,6 @@ import tensorflow as tf
 from keras import Input
 from keras import Sequential
 from keras.layers import Dense
-from re import split as resplit
 from sprites.player import Player
 
 
