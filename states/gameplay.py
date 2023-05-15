@@ -200,6 +200,14 @@ class Gameplay(BaseState):
         if self.total_updates == 15000:
             pygame.event.post(pygame.event.Event(KILLALL))
 
+        if self.total_updates == 200:
+            for player in self.players:
+                if not player.has_moved:
+                    player.score = 0
+                    player.updates_survived = 0
+                    player.freeze = True
+                    player.kill()
+
         for entity in self.all_sprites:
             if type(entity) == AI_Player: continue
             entity.update(None)
