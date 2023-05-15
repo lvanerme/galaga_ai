@@ -6,7 +6,7 @@ from sys import maxsize as MAXSIZE
 from random import random, randrange, randint, uniform, choice, choices
 from tensorflow import random_normal_initializer, Variable
 from sprites.ai_player import AI_Player
-
+from pytimedinput import timedInput
 
 def gen_seed(net_units, net_units2, pop_size) -> list:
     pop = []
@@ -126,7 +126,7 @@ def calc_fitness_scores(players: list):
         else: score = (p.score - mean_score) / (max_score - min_score)  # normalize scores
         if max_time == min_time: time = max_time
         else: time = (p.updates_survived - mean_time) / (max_time - min_time)   # normalize times
-        fitness_scores.append(score)   # score is evenly weighted between scores and time
+        fitness_scores.append(score + time)   # score is evenly weighted between scores and time
         
     return fitness_scores, max_score, max_time, max_score_idx, max_time_idx, mean_score, mean_time
         
@@ -136,10 +136,12 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, net_u
     players = gen_seed(net_units, net_units2, pop_size)
     
     #Grab subset of population to make game run faster
-    NUM_PLAYERS = 50
+    NUM_PLAYERS = 25
+
+    userText, display_graphics = timedInput(prompt="Press enter to turn on graphics", timeout = 2)
     for i in range(0, pop_size-1, NUM_PLAYERS):
         sub_players = players[i:i+NUM_PLAYERS]
-        play_game(sub_players)
+        play_game(sub_players, show = not display_graphics)
 
     scores, best_score, max_time, max_score_idx, max_time_idx, mean_score, mean_time = calc_fitness_scores(players)
     pop = [(p,s) for p,s in sorted(zip(players,scores), key=lambda x: x[1], reverse=True)]     # create list of tuples containing AI_Player and its associated score, sorted by score
@@ -182,10 +184,12 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, net_u
             new_len += 1
         
         del pop
+        
+        userText, display_graphics = timedInput(prompt="Press enter to turn on graphics", timeout = 2)
 
         for i in range(0, pop_size, NUM_PLAYERS):
             sub_players = new_players[i:i+NUM_PLAYERS]
-            play_game(sub_players)
+            play_game(sub_players, show = not display_graphics)
 
         # eval gen
         scores, new_best_score, new_max_time, best_score_idx, best_time_idx, mean_score, mean_time = calc_fitness_scores(new_players)
@@ -220,4 +224,4 @@ def ga(pop_size, cross_rate=0.7, mut_rate=0.03, max_iters=20, net_units=8, net_u
     out_player.close()
 
     
-ga(100, mut_rate=0.5, cross_rate=0.3, max_iters=150, net_units=12, net_units2=8, N=10)
+ga(50, mut_rate=0.5, cross_rate=0.3, max_iters=150, net_units=12, net_units2=8, N=10)
