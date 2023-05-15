@@ -58,19 +58,19 @@ class AI_Player(Player):
         if self.rect.left < 0: self.rect.left = 0
         if self.rect.right > constants.SCREEN_WIDTH: self.rect.right = constants.SCREEN_WIDTH
             
-        return move == 3        # Shoot rocket else stay still
+        return move                    # Shoot rocket else stay still
 
 
     def configure_model(self, input_hidden_ws, hidden_bs, hidden_ws2, hidden_bs2, hidden_output_ws, output_bs):
         model = Sequential()
         model.add(Input((15, )))
-        model.add(Dense(units=20, activation = 'sigmoid'))
-        model.add(Dense(units=10, activation = 'sigmoid'))
+        model.add(Dense(units=12, activation = 'sigmoid'))
+        model.add(Dense(units=8, activation = 'sigmoid'))
         model.add(Dense(units=4, activation = 'relu'))
         
-        hidden_weights = [np.array(input_hidden_ws).reshape(15,20), np.array(hidden_bs)]
-        hidden_weights2 = [np.array(hidden_ws2).reshape(20,10), np.array(hidden_bs2)]
-        output_weights = [np.array(hidden_output_ws).reshape(10,4), np.array(output_bs)]
+        hidden_weights = [np.array(input_hidden_ws).reshape(15,12), np.array(hidden_bs)]
+        hidden_weights2 = [np.array(hidden_ws2).reshape(12,8), np.array(hidden_bs2)]
+        output_weights = [np.array(hidden_output_ws).reshape(8,4), np.array(output_bs)]
         model.layers[0].set_weights(hidden_weights)
         model.layers[1].set_weights(hidden_weights2)
         model.layers[2].set_weights(output_weights)

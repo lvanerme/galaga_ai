@@ -202,7 +202,7 @@ class Gameplay(BaseState):
 
         if self.total_updates == 200:
             for player in self.players:
-                if not player.has_moved:
+                if not player.has_moved and not player.freeze:
                     player.score = 0
                     player.updates_survived = 0
                     player.freeze = True
@@ -251,9 +251,13 @@ class Gameplay(BaseState):
                 rocket1_coords, rocket2_coords, rocket3_coords = self.get_closest_rockets(player_x, player_y)
                 dist_to_left, dist_to_right = player.rect.left, (constants.SCREEN_WIDTH - player.rect.right)
                 can_move_left = 1 if player.rect.left > 0 else 0
-                can_move_right = 1 if (constants.SCREEN_WIDTH - player.rect.right) > 0 else 0
+                can_move_right = 1 if player.rect.right > constants.SCREEN_WIDTH else 0
                 shoot = player.update(player_x, enemy1_coords, enemy2_coords, rocket1_coords, rocket2_coords, rocket3_coords, can_move_left, can_move_right, dist_to_left, dist_to_right)
-                if shoot and len(player.rockets) < 2: self.shoot_rocket(player)
+                if (shoot == 0 and can_move_left == 0) or (shoot == 1 and can_move_right == 0): 
+                    player.score -= 120
+                    player.freeze = True
+                    player.kill()
+                if shoot == 3 and len(player.rockets) < 2: self.shoot_rocket(player)
 
         for player in self.players:
             if not player.freeze:
