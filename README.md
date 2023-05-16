@@ -1,19 +1,16 @@
-# python-galaga 
+# Galaga AI
 
-## Overview
-A galaga clone implemented using Python and Pygame. The various parts of the game are explained in an accompying Medium article.
+## General
+Trains an AI to play the game off galga using neural nets and gentic algorithms. This game was created by Patrick Kalkman.
+Players get points based on how many enemies they kill and how long they stay alive.
+Hyperparameters (mutation, crossover, iterations, n-array tournament, size of neural net) can be changed at the bottom of ga.py.
+
 
 ## Requirement
-Python 3.8 or higher and Pygame 2.0
+Python 3.8 or higher and Pygame 2.0 and TensorFlow
 
 ## Usage
-python3 main.py
-
-## Features
-The game features waves of enemies moving towards you along a bezier curve, animated sprites, collision detection, scoring, and different game states. It also uses several sounds from the original game.
+python3 ga.py
 
 ## Author
-Patrick Kalkman
-
-## Licence
-Please see license.txt.
+Lance VanErmen and Noah Gegner
