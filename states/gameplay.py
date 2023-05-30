@@ -202,7 +202,7 @@ class Gameplay(BaseState):
 
         if self.total_updates == 200:
             for player in self.players:
-                if not player.has_moved and not player.freeze:
+                if not player.has_moved:
                     player.score = 0
                     player.updates_survived = 0
                     player.freeze = True
@@ -254,7 +254,7 @@ class Gameplay(BaseState):
                 can_move_right = 1 if player.rect.right > constants.SCREEN_WIDTH else 0
                 shoot = player.update(player_x, enemy1_coords, enemy2_coords, rocket1_coords, rocket2_coords, rocket3_coords, can_move_left, can_move_right, dist_to_left, dist_to_right)
                 if (shoot == 0 and can_move_left == 0) or (shoot == 1 and can_move_right == 0): 
-                    player.score -= 120
+                    player.score -= 500
                     player.freeze = True
                     player.kill()
                 if shoot == 3 and len(player.rockets) < 2: self.shoot_rocket(player)
@@ -311,17 +311,6 @@ class Gameplay(BaseState):
             score = font.render(f"Player {num+1} score: {player.score}", True, (255, 255, 255))
             screen.blit(score, (10, score_y))
             score_y += 15
-
-
-        # score = self.font.render('SCORE', True, (255, 20, 20))
-        # screen.blit(score, (constants.SCREEN_WIDTH / 2 - 300 - score.get_rect().width / 2, 10))
-        # score = self.font.render(str(self.high_score), True, (255, 255, 255))
-        # screen.blit(score, (constants.SCREEN_WIDTH / 2 - 300 - score.get_rect().width / 2, 40))
-
-        # score = self.font.render('HIGH SCORE', True, (255, 20, 20))
-        # screen.blit(score, (constants.SCREEN_WIDTH / 2 - score.get_rect().width / 2, 10))
-        # score = self.font.render(str(self.high_score), True, (255, 255, 255))
-        # screen.blit(score, (constants.SCREEN_WIDTH / 2 - score.get_rect().width / 2, 40))
 
 
     def get_player_info(self, player):
